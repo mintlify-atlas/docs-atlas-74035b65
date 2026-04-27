@@ -1,0 +1,151 @@
+---
+title: "Post Formatter: Apply PAS, AIDA, BAB, STAR, or SLAY"
+description: "Apply PAS, AIDA, BAB, STAR, or SLAY to any topic. Outputs a LinkedIn post with strict line lengths, word counts, and mobile formatting enforced."
+---
+
+The Post Formatter skill applies a strict copywriting framework to any topic and produces a mobile-ready LinkedIn post with consistent formatting. Unlike the Post Writer skill, which drafts freely in your voice, the Post Formatter locks every post to a named framework, enforces a maximum of 20 lines and 250 words, and applies precise character limits per line. Use it when you want structural discipline on top of content.
+
+<Info>
+  If `voice.md` exists in your project, the Post Formatter tunes tone and rhythm to match it. The framework structure is enforced regardless.
+</Info>
+
+## Trigger phrases
+
+```
+format this as a post
+turn this into a LinkedIn post
+write it as PAS
+write it as AIDA
+write it in BAB format
+format using STAR
+SLAY framework post
+```
+
+## Prerequisites
+
+No API keys are required. The Post Formatter works without voice files, though it will use `voice.md` if present to tune the tone.
+
+## The five frameworks
+
+<Tabs>
+  <Tab title="PAS">
+    **Problem, Agitation, Solution**
+
+    Opens by naming a problem the reader recognises, agitates it to increase urgency, then delivers the solution. Best for pain-aware audiences who already understand the problem exists.
+
+    ```
+    Problem    → What's going wrong
+    Agitation  → Why it's worse than they think
+    Solution   → The fix, clearly stated
+    ```
+  </Tab>
+  <Tab title="AIDA">
+    **Attention, Interest, Desire, Action**
+
+    The classic advertising framework. Captures attention with a bold hook, builds interest with relevant detail, creates desire with the outcome, then closes with a clear action. Best for cold audiences or product announcements.
+
+    ```
+    Attention  → Stop the scroll
+    Interest   → Why this matters to them
+    Desire     → The outcome they want
+    Action     → One specific next step
+    ```
+  </Tab>
+  <Tab title="BAB">
+    **Before, After, Bridge**
+
+    Contrasts the reader's current state with a better future state, then explains how to get there. Best for transformation stories and case studies.
+
+    ```
+    Before  → Current painful state
+    After   → Desired future state
+    Bridge  → How to get from one to the other
+    ```
+  </Tab>
+  <Tab title="STAR">
+    **Situation, Task, Action, Result**
+
+    A narrative framework for case studies, personal stories, and client results. Best when you have a real outcome to share.
+
+    ```
+    Situation  → Context and starting point
+    Task       → What needed to be done
+    Action     → What was done and how
+    Result     → The specific outcome with numbers
+    ```
+  </Tab>
+  <Tab title="SLAY">
+    **Story, Lesson, Actionable advice, You**
+
+    Shares a story, extracts the lesson, gives the reader something concrete to act on, then personalises it directly to them. Best for educational posts with a narrative wrapper.
+
+    ```
+    Story            → The narrative
+    Lesson           → What it taught you
+    Actionable advice → One thing the reader can do now
+    You              → Direct to the reader
+    ```
+  </Tab>
+</Tabs>
+
+## Workflow
+
+<Steps>
+  <Step title="Gather inputs">
+    The skill asks for your topic (type it or paste a context dump) and your preferred framework. If you select "Pick for me", the skill analyses the topic and recommends the best framework.
+
+    A follow-up question asks for any supporting facts, stats, tone notes, or audience context.
+  </Step>
+  <Step title="Write the post">
+    The skill writes the post applying both the chosen framework and a strict set of global formatting rules. Every output is counted before delivery.
+  </Step>
+  <Step title="Output in a code block">
+    The finished post is output in a code block with no preamble or trailing commentary.
+  </Step>
+  <Step title="Offer the next move">
+    After the post, the skill asks whether you want a matching graphic (Graphic Designer skill) or a score against your post history (Post Scorer skill).
+  </Step>
+</Steps>
+
+## Formatting rules
+
+Every post produced by the Post Formatter — regardless of framework — follows these rules:
+
+<CardGroup cols={2}>
+  <Card title="Length limits" icon="ruler">
+    Maximum 20 lines. 200–250 words total (~1,200 characters). Every line and word is counted before output.
+  </Card>
+  <Card title="Line structure" icon="align-left">
+    Blank line after every line. Most lines are one sentence at 55 characters or fewer. Up to 4 lines may be mini-paragraphs of 2–3 sentences at 110 characters or fewer.
+  </Card>
+  <Card title="Hook and contrast" icon="bolt">
+    Line 1 is bold, 50 characters or fewer. Line 2 is a twist or contrast, also 50 characters or fewer, that opposes or surprises the hook.
+  </Card>
+  <Card title="Wrap and CTA" icon="arrow-right">
+    Lines 19–20 lock the lesson. The post closes with "Repost if", "Repost this", or "If this helped, repost" followed by the recycle symbol.
+  </Card>
+</CardGroup>
+
+<Warning>
+  The Rule of Three applies: any list inside the post must have exactly three items. Not two, not four. If you include a trio, it must be complete.
+</Warning>
+
+## Additional style rules
+
+- Grade 6 reading level. No adverbs, no jargon, no filler words
+- No em dashes
+- No questions unless the hook itself is a question
+- No emojis except checkmarks for numbered lists and the recycle symbol in the CTA
+- Vary sentence starts — avoid opening multiple lines with "I"
+- British English unless `voice.md` specifies otherwise
+
+## Example trigger phrases
+
+```
+Format a post about cold outreach using PAS.
+Turn my notes into a LinkedIn post using the SLAY framework.
+Write this as BAB — before I found this tool, after, and how.
+STAR framework post about a client result.
+Write it as AIDA and pick the hook.
+Pick the best framework for a post about pricing strategy.
+```

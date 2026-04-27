@@ -1,0 +1,164 @@
+---
+title: "LinkedIn Pinned Comment: Meme-Style Image & Comment"
+description: "Generate a photorealistic image prompt and a 4-line deadpan pinned comment in Charlie Hills' signature style, always delivered together."
+---
+
+The Pinned Comment skill writes the first comment pinned beneath a LinkedIn post — the one that builds personality and trust after the value has already been delivered. It produces two things together: a photorealistic image generation prompt built around a single visual gag, and a 4-line comment that captions that image as if reporting a news fact. The image carries the joke. The comment captions it. Neither works alone; both are always delivered together.
+
+## Trigger phrases
+
+This skill activates when you (or anyone on the team) asks for:
+
+- "pinned comment"
+- "pin comment"
+- "first comment" for a LinkedIn post
+
+## The core concept
+
+<Info>
+Image generation always comes first. If the comment makes sense without the image, it is doing too much work. If the image needs the comment to explain the joke, the image is too weak.
+</Info>
+
+Every pinned comment is built on one quiet admission hiding inside the LinkedIn post — the thing the post is quietly confessing. Without naming that admission first, the comment loses its grounding.
+
+**Charlie is always the lower-status figure.** Claude wins. The logo wins. The mum wins. Charlie loses with quiet dignity. This is non-negotiable across every line.
+
+## Workflow
+
+<Steps>
+  <Step title="Find the admission">
+    Read the LinkedIn post and name the one quiet confession in a single sentence. Examples:
+
+    - "Cowork does most of my actual job now"
+    - "I am embarrassingly dependent on Anthropic"
+    - "I gave away a 9-month product for free"
+
+    <Warning>
+      If you cannot name the admission in one sentence, the post is not pinned-comment material yet. Stop here and flag it rather than proceeding with a weak foundation.
+    </Warning>
+  </Step>
+
+  <Step title="Build the image prompt">
+    Write a photorealistic image prompt using this format:
+
+    > "Using the person in the attached reference image, create a photorealistic image of [scene]. [One clear visual gag described in detail]. [Charlie's posture and expression, played completely straight]. [Lighting and framing notes]."
+
+    Three rules for the image:
+
+    - **One clear visual gag.** The eye lands on it in under a second.
+    - **Played completely straight.** No winking, no thumbs up, no exaggerated faces. The humour comes from treating the absurd as normal.
+    - **Charlie is the lower-status figure.** Always.
+  </Step>
+
+  <Step title="Write the 4-line comment">
+    Caption the image with four lines. Each line is one complete sentence. The comment names what the image shows as if reporting the news.
+
+    ```
+    📌 [Line 1: Describe the absurd thing as normal fact]
+    [Line 2: Flip Charlie's status downward]
+    [Line 3: A sad flex, the smallest possible win]
+    [Line 4: Resigned acceptance, no punchline reach]
+    ```
+  </Step>
+
+  <Step title="Run the 5 tests before sending">
+    Check every output against these five tests before delivering it:
+
+    1. **Image gag test.** Can you describe the visual gag in 5 words? If not, the image is too busy — simplify.
+    2. **Caption test.** Does line 1 caption the image as fact? If line 1 sets up a separate joke, rewrite.
+    3. **Loser test.** Is Charlie the lower-status figure in every line? If he wins anywhere, rewrite.
+    4. **Reach test.** Does line 4 try too hard for a punchline? Make the line smaller and sadder — resigned beats clever.
+    5. **Boring-on-its-own test.** Read the 4 lines without the image. Is the comment boring alone? Good. That means the image is doing the heavy lifting.
+
+    Fix any failure before sending. Do not note the failure and send anyway.
+  </Step>
+</Steps>
+
+## 4-line rules
+
+<CardGroup cols={2}>
+  <Card title="Structure" icon="list">
+    Exactly 4 lines. No more, no less. Each line is one complete sentence. Start with 📌 on line 1. No P.S. Line 4 is the punchline.
+  </Card>
+  <Card title="Length" icon="ruler">
+    Each line is 40 characters maximum. No line breaks between sentences — they sit tight together.
+  </Card>
+  <Card title="Language" icon="pen">
+    British English throughout. No em dashes, no hashtags, no semicolons. Avoid: just, that, very, really, actually, literally.
+  </Card>
+  <Card title="Tone" icon="face-expressionless">
+    Deadpan throughout. No wink-to-camera energy. Charlie never wins, looks cool, or sounds smart in any line. Line 4 is resigned, not clever.
+  </Card>
+</CardGroup>
+
+## Gold standard example
+
+This example is the benchmark. Compare every new comment against it before sending.
+
+<Tabs>
+  <Tab title="The image">
+    Charlie sitting cross-legged on the floor in striped pyjamas eating cereal from a bowl, looking up at his own desk chair where an open laptop sits with a knotted necktie draped over the keyboard. A framed "Employee of the Month" certificate on the wall has the Claude logo and the name "Claude (Anthropic)" on it. Morning light, played completely straight.
+  </Tab>
+  <Tab title="The comment">
+    ```
+    📌 Claude wears the tie now.
+    I wear the pyjamas.
+    The cereal was my idea, at least.
+    Small wins where you find them.
+    ```
+  </Tab>
+  <Tab title="Why it works">
+    - Line 1 captions the image as fact — the tie on the keyboard is the gag.
+    - Line 2 is the deadpan status reversal.
+    - Line 3 is the saddest possible flex.
+    - Line 4 lands without reaching — resigned, not clever.
+    - All 4 lines pass the loser test. Charlie loses in every one.
+    - Read alone, the comment is mildly amusing. With the image, it sings.
+  </Tab>
+</Tabs>
+
+## Proven image gag formats
+
+<AccordionGroup>
+  <Accordion title="Status reversal at the desk">
+    Laptop in the chair wearing a tie. Charlie on the floor in pyjamas.
+  </Accordion>
+  <Accordion title="The shrine">
+    Candles, a rose, a framed Anthropic logo, a handwritten letter "To Dario". Charlie kneeling in prayer.
+  </Accordion>
+  <Accordion title="The banquet table">
+    Charlie at the head of the table with a paper crown. Every other seat is a tech logo: Stanford, Google, OpenAI, Anthropic, Microsoft.
+  </Accordion>
+  <Accordion title="The therapist's couch">
+    Charlie reclining, looking happy. Therapist looking concerned. The Claude logo framed on the wall behind her.
+  </Accordion>
+  <Accordion title="The boardroom">
+    Charlie pointing at a presentation. Every executive in the room is a tech logo.
+  </Accordion>
+  <Accordion title="The pub vs the home office">
+    Charlie smug at a pub table while his laptop visibly works through a window across the street.
+  </Accordion>
+</AccordionGroup>
+
+## What to avoid
+
+- Comments that explain the image instead of captioning it
+- Comments that work without the image (the image becomes redundant)
+- Charlie winning, looking cool, or sounding smart in any line
+- Reaching for a clever punchline on line 4
+- Visual gags that take more than 5 words to describe
+- More than one gag per image
+- Sponsored brand names shoehorned into the comment — the post handles that
+
+## Output format
+
+Every response includes all four elements in this order:
+
+1. **The admission** — one sentence stating what the post is quietly confessing
+2. **The image prompt** — full paragraph in the standard format
+3. **The 4-line comment** — with 📌 on line 1
+4. **A one-line test note** — confirming the comment passed all 5 tests
+
+<Tip>
+If the first attempt is borderline, provide 2-3 variations rather than asking for a rewrite. It is faster to choose from options than to iterate blind.
+</Tip>

@@ -1,0 +1,186 @@
+---
+title: "Post Scorer: Benchmark LinkedIn Drafts Against Real Data"
+description: "Score a LinkedIn post across 5 criteria using your post history or Charlie Hills benchmarks. Every fix cites specific data points, not subjective opinions."
+---
+
+The Post Scorer skill evaluates a LinkedIn draft against real performance data before you publish. Rather than offering generic feedback, it analyses your top 10% performing posts to identify what actually works for you — hook types, post lengths, CTA patterns, and format distribution — then scores the draft against those specific patterns. Every fix it suggests cites a data point. A generous scorer is useless, so it does not round up.
+
+<Warning>
+  Scoring against your own post history via Apify costs approximately $0.50 per scrape. The skill will inform you before running any paid action. If you choose to skip, Charlie Hills benchmarks or generic best practices are available as free fallbacks.
+</Warning>
+
+## Trigger phrases
+
+```
+score my post
+review my post
+rate this post
+give me feedback
+how good is this post
+```
+
+You can also paste a LinkedIn post directly into the chat with any of these phrases and the scorer will use it immediately.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="about-me.md and voice.md" icon="microphone">
+    Optional but recommended. If present, the scorer uses them for voice matching. If missing, it notes this and scores without voice matching.
+  </Card>
+  <Card title="APIFY_API_TOKEN" icon="key">
+    Required only if you choose to scrape your own post history. Not needed for Charlie Hills benchmarks or generic scoring.
+  </Card>
+</CardGroup>
+
+## Data sources
+
+The skill offers three data sources. It always tries real data before falling back.
+
+<Tabs>
+  <Tab title="Your post history">
+    The scorer calls the Apify actor `apimaestro/linkedin-profile-posts` with your LinkedIn username and pulls your last 100 posts. Results are cached as `[username]-all-posts.json` in your project so future scores are instant.
+
+    <Note>
+      Do not use the `fields` parameter on this Apify actor — it strips engagement data. The skill handles this automatically.
+    </Note>
+  </Tab>
+  <Tab title="Charlie Hills benchmarks">
+    Uses aggregated data from 500 posts analysed across Charlie Hills' LinkedIn account. Applied when no personal data is available or when you choose this option directly.
+
+    | Metric | Value |
+    |---|---|
+    | Average engagement | 1,872 (reactions + comments × 3) |
+    | Average reactions | 808 |
+    | Average comments | 355 |
+    | Average reposts | 61 |
+    | Comment-to-reaction ratio | 44% |
+    | Top hook: number-led | 31% |
+    | Top hook: bold claim | 27% |
+    | Top hook: contrarian | 18% |
+    | Top format: carousel | 33% |
+    | Top format: image | 29% |
+    | Top format: text only | 22% |
+    | Top 10% post length | 180–250 words |
+    | CTA: newsletter mention | 45% |
+    | Comment gate rate | 5% |
+  </Tab>
+  <Tab title="Generic best practices">
+    Scores the post against general LinkedIn best practices with no personal or benchmark data. Least accurate, but instant and free.
+  </Tab>
+</Tabs>
+
+## Workflow
+
+<Steps>
+  <Step title="Get the post">
+    If you pasted the post in the same message as the trigger phrase, the skill uses it immediately. Otherwise it asks you to paste it.
+  </Step>
+  <Step title="Load scoring data">
+    The skill reads `about-me.md` and `voice.md` if they exist. It then checks your project for cached post data (`*-all-posts.json` or `*-posts.txt`). If no cache exists, it asks you to choose a data source.
+  </Step>
+  <Step title="Analyse top performers">
+    When real data is available, the skill calculates engagement for every post using the formula `total_reactions + (comments × 3)`, identifies the top 10%, and extracts the patterns that define them: hook types, average length, format distribution, CTA patterns, and topic clusters. It also notes what the bottom 10% have in common.
+  </Step>
+  <Step title="Score the post">
+    The draft is scored across 5 criteria, each out of 10. See the scoring criteria section below.
+  </Step>
+  <Step title="Output the scorecard">
+    The full scorecard is output in a code block, sized to display cleanly on a large screen at events as well as in the chat.
+  </Step>
+  <Step title="Offer next steps">
+    After the scorecard, the skill asks whether you want it to rewrite the weakest section using patterns from your top posts, or ship the draft as-is.
+  </Step>
+</Steps>
+
+## Scoring criteria
+
+Each criterion is scored 1–10. A score above 8 is only awarded when the draft genuinely matches top 10% patterns.
+
+<AccordionGroup>
+  <Accordion title="Hook strength (1–10)">
+    Compares the opening line against hook types found in the top 10% of posts.
+
+    - Does it use a hook type that historically performs for this author?
+    - Is it specific with a number, name, or concrete detail?
+    - Would it stop a scroll based on what actually stops scrolls in the data?
+
+    A score of 8 or above requires the hook type to match a pattern in the top 10%.
+  </Accordion>
+  <Accordion title="Voice match (1–10)">
+    If `voice.md` exists, the post is checked against tone, rhythm, and sentence length from the file. Any violation of the absence patterns section (what the voice never does) reduces the score.
+
+    If no voice files exist, the score is based on patterns extracted from the post data instead.
+  </Accordion>
+  <Accordion title="Value density (1–10)">
+    Compared against the user's top-performing posts:
+
+    - Do their best posts teach, give steps, share data, or tell stories?
+    - Does this draft match that value pattern?
+    - Is the takeaway specific enough that someone would save or share it?
+    - Is the word count close to the top 10% average? Large deviations are flagged.
+  </Accordion>
+  <Accordion title="Structure and format (1–10)">
+    Based on the data:
+
+    - What format (text, image, carousel) gets the most engagement for this author?
+    - Does the line break and paragraph rhythm match top posts?
+    - Is the post scannable on mobile?
+    - Does the CTA match patterns from the best performers?
+  </Accordion>
+  <Accordion title="Publish readiness (1–10)">
+    - Does the post read as genuinely written, or like unedited AI output?
+    - Would it blend naturally into the author's existing feed?
+    - Are there red flags: banned words from `voice.md`'s absence patterns, generic phrases, corporate tone?
+    - Is the length consistent with top performers?
+  </Accordion>
+</AccordionGroup>
+
+## Scorecard output format
+
+```
+LINKEDIN POST SCORE
+
+Data source: [their posts / Charlie Hills benchmarks / generic]
+Posts analysed: [number]
+Top 10% avg engagement: [number]
+
+Hook strength:         [X] / 10  [hook type detected]
+Voice match:           [X] / 10
+Value density:         [X] / 10
+Structure and format:  [X] / 10  [format: text/image/carousel]
+Publish readiness:     [X] / 10
+----------------------------------------
+TOTAL:                 [XX] / 50
+
+VERDICT: [One sentence referencing specific data]
+
+TOP PERFORMER COMPARISON:
+Your top posts average [X] words, use [hook type] hooks,
+and include [CTA pattern]. This draft [matches/differs] because [specific reason].
+
+FIXES:
+1. [Specific fix backed by data]
+2. [Second fix backed by data]
+3. [Third fix if needed]
+```
+
+Every fix references actual data. Not "improve the hook" but a specific instruction like: "Your top 10% posts open with numbers — 42% of hits use number-led hooks. This draft uses a question hook, which appears in 12% of hits. Lead with the stat instead."
+
+## Rules and constraints
+
+- If cached data is more than 14 days old, the skill suggests a refresh before scoring
+- Never scores above 8 unless the draft genuinely matches top 10% patterns
+- Always references specific data points in fixes — no subjective opinions
+- Informs the user before running any Apify scrape (costs money)
+- British English throughout
+- No em dashes in any output
+
+## Example trigger phrases
+
+```
+Score my post.
+Review this draft before I publish.
+Rate this post against my data.
+How good is this post? [paste post]
+Give me feedback on this LinkedIn post.
+```

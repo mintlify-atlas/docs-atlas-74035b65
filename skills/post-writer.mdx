@@ -1,0 +1,129 @@
+---
+title: "Post Writer: Draft LinkedIn Posts That Sound Like You"
+description: "Write LinkedIn posts that sound like you. Reads about-me.md and voice.md, researches angles, and outputs a ready-to-publish draft in a plain code block."
+---
+
+The Post Writer skill turns any topic, idea, or context dump into a LinkedIn post that sounds like you. Before writing a single word, it reads your `about-me.md` and `voice.md` files to absorb your tone, sentence rhythm, hook patterns, and the things your voice never does. The result is a draft that needs editing, not a rewrite.
+
+<Note>
+  This skill requires `about-me.md` and `voice.md` in your project. If either file is missing, the skill will stop and ask you to run the Voice Builder skill first. Say "build my voice" to create them.
+</Note>
+
+## Trigger phrases
+
+Say any of these to activate the Post Writer skill:
+
+```
+write a post
+draft a post
+LinkedIn post
+post about [topic]
+content idea
+```
+
+You can also paste a context dump — notes, transcripts, or bullet points — directly into the chat and the skill will extract the core idea before asking follow-up questions.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="about-me.md" icon="user">
+    Created by the Voice Builder skill. Contains your audience, topic pillars, and positioning.
+  </Card>
+  <Card title="voice.md" icon="microphone">
+    Created by the Voice Builder skill. Contains your tone, sentence rhythm, hook style, CTA patterns, and absence patterns.
+  </Card>
+</CardGroup>
+
+No API keys are required. The skill works entirely within Claude using your local project files.
+
+## Workflow
+
+<Steps>
+  <Step title="Gather inputs">
+    The skill checks your project for `about-me.md` and `voice.md`. If both exist, it asks two questions: what you want to post about, and whether you have reference posts to use as structural inspiration.
+
+    **Topic options:**
+    - Type a topic directly
+    - Paste a context dump (notes, transcripts, bullet points)
+    - Ask the skill to suggest 5 topics based on your voice files
+
+    **Reference options:**
+    - Write from scratch using voice files only
+    - Paste examples from other creators for structural inspiration
+    - Use training posts already in your project
+  </Step>
+  <Step title="Research and plan">
+    Before writing, the skill researches the topic. It looks for data points, contrarian takes, real examples, and common misconceptions worth challenging.
+
+    It then presents 3 angle options and 4 framework options for you to choose from:
+
+    **Frameworks available:**
+    - PAS (Problem, Agitate, Solution)
+    - How-to list (numbered steps or tips)
+    - Story to lesson (personal story with a takeaway)
+    - Contrarian take (challenge a common belief)
+
+    <Tip>
+      The angle options are written based on your actual topic research. They are never placeholder text.
+    </Tip>
+  </Step>
+  <Step title="Write the draft">
+    With your angle and framework confirmed, the skill writes the post. It applies every rule from `voice.md`: tone, rhythm, hook style, CTA style, and the absence patterns section that lists what your voice never does.
+
+    The finished post is output in a plain code block — copy and paste directly into LinkedIn.
+
+    After the code block, the skill adds 2–3 sentences explaining why it chose this hook and structure, with specific references to patterns in your `voice.md`.
+  </Step>
+  <Step title="Iterate">
+    Give feedback or say **"ship it"** to save the final version. The skill supports up to 3 revision rounds. When you ship, it saves the post as a markdown file in your project and suggests next steps.
+  </Step>
+</Steps>
+
+## Output format
+
+The finished post is always output inside a plain code block, with all line breaks and formatting exactly as they should appear on LinkedIn:
+
+````
+```
+[Full post text with LinkedIn formatting]
+```
+````
+
+After the code block, a brief explanation covers the hook choice and structural decisions with references to `voice.md` patterns.
+
+## Rules and constraints
+
+<AccordionGroup>
+  <Accordion title="Voice file dependency">
+    The skill always reads `about-me.md` and `voice.md` before writing. If either file is missing, it stops. Run Voice Builder first.
+  </Accordion>
+  <Accordion title="Post length">
+    Posts are kept between 150 and 300 words unless you explicitly ask for something longer or shorter.
+  </Accordion>
+  <Accordion title="Formatting rules">
+    - No em dashes in any post
+    - British English unless `voice.md` specifies otherwise
+    - No hashtags unless `voice.md` explicitly uses them
+    - No engagement bait CTAs unless they appear in `voice.md`
+  </Accordion>
+  <Accordion title="Planning is mandatory">
+    The skill never skips Step 2. Research and angle selection happen before any writing begins.
+  </Accordion>
+</AccordionGroup>
+
+## Example trigger phrases
+
+```
+Write a post about the mistake most founders make with their first hire.
+Post about burnout — I want a contrarian angle.
+I have some notes from a client call, can you turn them into a LinkedIn post?
+Suggest some topics for me to post about this week.
+Draft a post about AI tools for marketers.
+```
+
+## What comes next
+
+After saving a post, the skill suggests two paths:
+
+- **"design a graphic"** — launches the Graphic Designer skill to create a matching visual
+- **"score my post"** — launches the Post Scorer skill to benchmark the draft against real performance data

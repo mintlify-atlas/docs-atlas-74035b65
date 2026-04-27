@@ -1,0 +1,118 @@
+---
+title: "Graphic Designer: LinkedIn Post Graphics and Infographics"
+description: "Create a LinkedIn graphic from any post. Produces an HTML/CSS file for structured content or a Gemini prompt for whiteboard and branded infographics."
+---
+
+The Graphic Designer skill reads your post and produces a visual to go with it. It decides between two paths depending on what the post contains: an HTML/CSS file for structured content like steps, frameworks, and comparisons, or a fully-formed image generation prompt for Gemini when the post recaps a workflow, tells a story, or teaches a concept. Both paths produce assets sized for LinkedIn.
+
+<Note>
+  Image generation skills output ready-to-paste prompts for Gemini's Create Image feature. No API key is needed. For HTML/CSS graphics, open the saved file in your browser and screenshot it.
+</Note>
+
+## Trigger phrases
+
+```
+design a graphic
+create a visual
+make an image
+graphic for my post
+LinkedIn image
+```
+
+The skill also triggers automatically when you finish writing a post in the Post Writer skill and say "design a graphic".
+
+## Prerequisites
+
+No API keys are required. The skill uses `about-me.md` if it exists to add your name to graphic footers.
+
+## Workflow
+
+<Steps>
+  <Step title="Read the post">
+    The skill checks your project for the most recent post file. If found, it reads it automatically. If not, it asks you to paste the post.
+  </Step>
+  <Step title="Choose the graphic type">
+    You are asked which style fits the post. Options:
+
+    - **HTML/CSS graphic** — clean structured layout for frameworks, comparisons, steps, and data
+    - **Whiteboard infographic** — hand-drawn marker style on a whiteboard or notebook page, generated in Gemini
+    - **Branded infographic** — professional infographic using your brand colours, generated in Gemini
+    - **You decide** — the skill analyses the post and picks the best path automatically
+
+    If you select "You decide": posts with numbered steps, frameworks, comparisons, or data tables go to Path A (HTML/CSS). Posts that recap workflows, share tips, teach concepts, or tell stories go to Path B (image prompt).
+  </Step>
+  <Step title="Design and deliver">
+    The skill produces the graphic or prompt based on the chosen path.
+  </Step>
+</Steps>
+
+## Path A: HTML/CSS structured graphic
+
+For posts with clear structure — steps, frameworks, comparisons, or data.
+
+<CardGroup cols={2}>
+  <Card title="Dimensions" icon="expand">
+    1,200 × 1,400 pixels (LinkedIn optimal). Single self-contained HTML file with inline CSS and viewport meta tag.
+  </Card>
+  <Card title="Design" icon="palette">
+    Dark background (`#1a1a2e` or your brand colour) with high-contrast text. Clean sans-serif font (Inter, system-ui). One accent colour for highlights and dividers.
+  </Card>
+  <Card title="Content" icon="file-text">
+    Distils the post into a short headline (5–8 words) and key points as visual blocks. Does not copy the full post text. Unicode icons are used where helpful.
+  </Card>
+  <Card title="Footer" icon="user">
+    Includes your name from `about-me.md` if available.
+  </Card>
+</CardGroup>
+
+The number of sections in the graphic matches the post content. 3 steps produce 3 blocks. 10 tips produce 10 blocks. The constraint is legibility on mobile, not a fixed number.
+
+After saving the HTML file, the skill tells you: "Open the HTML in your browser and screenshot it."
+
+## Path B: Image generation prompt
+
+For posts that recap workflows, teach concepts, or tell stories. The prompt is output in a code block, fully self-contained, and ready to paste directly into Gemini.
+
+Before building the prompt, the skill extracts from the post:
+- The main headline or hook (shortened to 5–10 words)
+- 3–6 key points, steps, or takeaways (one short line each)
+- Any numbers, stats, or data worth highlighting
+- A footer line with the author name
+
+<Tabs>
+  <Tab title="Whiteboard style">
+    The prompt specifies a photograph of a real whiteboard or large paper notepad. All elements look created by hand using coloured marker pens (black, blue, red, green) and highlighters. Lines are slightly imperfect and wobbly. All text appears handwritten in marker pen — no digital fonts.
+
+    The image is 1,080 × 1,350 pixels. The footer always includes the author name from `about-me.md` in the same hand-drawn marker style, followed by "| Repost".
+  </Tab>
+  <Tab title="Branded style">
+    The prompt specifies a clean, modern, editorial design. Flat design with sharp edges and strong typography. No 3D effects, no gradients, no stock photos.
+
+    The image is 1,080 × 1,350 pixels. Brand colours are used for background, text, and accent. Maximum 40 words on the entire image. No decorative borders, watermarks, or logos unless you provide one.
+
+    If brand colours are not in `about-me.md`, the skill asks for your hex codes before building the prompt.
+  </Tab>
+</Tabs>
+
+After the prompt, the skill tells you: "Paste this into Gemini or your image generator. The prompt is ready to go."
+
+## Rules and constraints
+
+- Always reads the post before designing — the graphic must recap the post content, not illustrate an abstract concept
+- HTML/CSS graphics must be a single file with inline CSS
+- Image prompts must be fully self-contained — the user pastes them cold into Gemini
+- Whiteboard style: always hand-drawn marker look, imperfect lines, coloured pens, notebook or whiteboard texture
+- Branded style: always clean, flat, modern, using the user's brand colours
+- No em dashes in any output
+- British English throughout
+
+## Example trigger phrases
+
+```
+Design a graphic for this post.
+Create a visual for my post about the 3-step framework.
+Make a whiteboard infographic for my LinkedIn post.
+Graphic for my post — use my brand colours.
+LinkedIn image for the post I just wrote.
+You decide — pick the best format for this post.
+```

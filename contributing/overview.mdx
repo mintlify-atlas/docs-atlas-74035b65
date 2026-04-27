@@ -1,0 +1,188 @@
+---
+title: 'Contributing to Social Media Skills'
+description: 'Everything you need to add new skills, improve existing ones, and submit a pull request — including style rules, naming conventions, and PR format.'
+---
+
+Contributing to Social Media Skills means writing clear, opinionated skill files that Claude can load and act on immediately. Whether you are fixing a trigger phrase, improving output formatting, or building something brand new, this guide walks you through the full process from fork to merged PR.
+
+## Contribution workflow
+
+<Steps>
+  <Step title="Fork the repository">
+    Fork the repo on GitHub and clone your fork locally. Create a feature branch before making any changes.
+
+    ```bash
+    git checkout -b feat/new-skill-name
+    # or for fixes:
+    git checkout -b fix/skill-name-issue
+    ```
+  </Step>
+
+  <Step title="Make your changes">
+    Add a new skill folder or edit an existing `SKILL.md`. Follow the folder structure and style rules covered below before writing anything.
+  </Step>
+
+  <Step title="Validate your changes">
+    Run the validation script from the repo root. It checks frontmatter, naming, description, file size, and folder structure.
+
+    ```bash
+    ./validate-skills.sh
+    ```
+
+    Fix any failures before opening a PR. Warnings are acceptable but worth addressing.
+  </Step>
+
+  <Step title="Open a pull request">
+    Push your branch and open a PR against `main`. Use the title format and body guidance in the [PR format](#submitting-a-pr) section below.
+  </Step>
+</Steps>
+
+## Adding a new skill
+
+Every skill lives in its own folder under `skills/`. The folder name must be lowercase, hyphen-separated, and match the `name` field in the skill's YAML frontmatter exactly.
+
+<Steps>
+  <Step title="Create the skill folder">
+    ```bash
+    mkdir skills/my-new-skill
+    ```
+
+    The folder name becomes the skill's identifier across the whole repo. Choose it carefully — renaming later breaks references.
+  </Step>
+
+  <Step title="Add SKILL.md with frontmatter">
+    Every skill starts with YAML frontmatter. At minimum, you need `name` and `description`. See [skill-spec](/contributing/skill-spec) for the full frontmatter reference.
+  </Step>
+
+  <Step title="Write the skill body">
+    Most skills follow a standard structure with an auto-start directive, numbered steps, and a Rules section at the bottom. See [skill-spec](/contributing/skill-spec) for the canonical template.
+  </Step>
+
+  <Step title="Organise supporting files">
+    Keep `SKILL.md` under 500 lines. Move anything that does not need to be read every time into subdirectories:
+
+    <CardGroup cols={3}>
+      <Card title="references/" icon="book-open">
+        Reference material, lookup tables, sample content the skill loads on demand.
+      </Card>
+      <Card title="assets/" icon="image">
+        Templates, sample outputs, or any static file the skill produces or reads.
+      </Card>
+      <Card title="scripts/" icon="terminal">
+        Shell scripts the skill invokes via a tool call.
+      </Card>
+    </CardGroup>
+  </Step>
+</Steps>
+
+## Improving an existing skill
+
+<Note>
+  Do not change or remove trigger phrases from the `description` field. Other users have set up Claude to respond to those exact phrases, and breaking them is a disruptive change that requires a major version note.
+</Note>
+
+When editing an existing skill, keep these rules in mind:
+
+- The YAML `name` field must continue to match the folder name. Do not rename either without updating both.
+- If you change the output format, update the `## Output` section in the skill body to match. Claude reads that section to know what to produce.
+- Test the skill in your own Claude project before opening a PR. Paste the trigger phrase in a fresh conversation and confirm Claude picks it up and runs correctly.
+
+## Style rules
+
+All skills in this repo follow a shared style guide. These rules are non-negotiable — the validation script does not enforce all of them, but reviewers will.
+
+<AccordionGroup>
+  <Accordion title="Language and spelling">
+    British English throughout. Use "ise" not "ize" spellings (e.g., "organise", "recognise", "customise"). This applies to skill bodies, comments, and any output templates.
+  </Accordion>
+
+  <Accordion title="Sentence structure">
+    Short sentences. No em dashes. No semicolons. If a sentence feels long, split it. Every sentence in a Rules section should use "never" or "always" phrasing to make the constraint unambiguous.
+  </Accordion>
+
+  <Accordion title="Banned words and phrases">
+    Never use the following in any skill file:
+
+    - "leverage" (as a verb)
+    - "deep dive"
+    - "unlock"
+    - "game-changer"
+    - "groundbreaking"
+
+    These phrases add no information and dilute the direct, instructional tone the skills require.
+  </Accordion>
+
+  <Accordion title="Input gathering">
+    Use `AskUserQuestion` for input collection wherever a tool call is better than asking questions in chat. The tool renders as an interactive form, which is a better experience for the user. Do not type questions as plain chat text when a form is possible.
+  </Accordion>
+
+  <Accordion title="Output filenames">
+    Every skill that produces a file must state the exact filename and location in the skill body. Do not leave this ambiguous. Example: "Create `about-me.md` in the project root."
+  </Accordion>
+
+  <Accordion title="Skill dependencies">
+    Every skill that depends on the output of another skill must check for that output before running. If the required file is missing, tell the user what to run first.
+  </Accordion>
+</AccordionGroup>
+
+## Naming conventions
+
+<CardGroup cols={2}>
+  <Card title="Folder and YAML name" icon="folder">
+    Lowercase, hyphen-separated, no spaces. The folder name and the `name` field in frontmatter must always match exactly.
+
+    ```
+    skills/post-writer/
+    name: post-writer
+    ```
+  </Card>
+  <Card title="Name style" icon="tag">
+    Skill names read as verb-object or noun phrases that describe the output. Prefer `post-writer` over `writing-posts`. Keep names to three words maximum where possible.
+  </Card>
+</CardGroup>
+
+## Testing locally
+
+Before opening a PR, copy your skill into Claude's local skill directory and test it manually.
+
+```bash
+cp -r skills/my-new-skill ~/.claude/skills/
+```
+
+Then open a new Claude conversation and trigger the skill with the phrases listed in the `description` field. Verify all four of these:
+
+<CardGroup cols={2}>
+  <Card title="Trigger phrase" icon="zap">
+    Claude picks up the skill on the trigger phrase and starts immediately without asking for confirmation.
+  </Card>
+  <Card title="Input collection" icon="list">
+    Inputs are collected correctly — `AskUserQuestion` renders as a form, not as plain chat questions.
+  </Card>
+  <Card title="Output format" icon="file-text">
+    Output matches the format defined in the skill, including exact filenames and structure.
+  </Card>
+  <Card title="External dependencies" icon="plug">
+    All external dependencies (Apify, Gemini, etc.) are checked before use and the skill fails gracefully if they are unavailable.
+  </Card>
+</CardGroup>
+
+## Submitting a PR
+
+<Tip>
+  Include a sample input and output in the PR body if your change affects what Claude produces. This makes review significantly faster.
+</Tip>
+
+**Title format:**
+
+```
+feat: add [skill-name]
+fix: [skill-name] [brief description of what changed]
+```
+
+**Body should include:**
+
+- What changed and why
+- Sample input and output (if output format is affected)
+- Link to any related issue
+
+Questions? Open a GitHub issue in the repository.

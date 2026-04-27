@@ -1,0 +1,201 @@
+---
+title: 'Skill File Specification and Validation'
+description: 'Technical spec for valid skill files: frontmatter fields, body structure, file size limits, folder layout, and how to run the validation script.'
+---
+
+Every skill in this repo is a single `SKILL.md` file with YAML frontmatter and a structured body. The validation script checks your skill against this spec automatically. Understanding the spec before writing saves you debugging time and makes code review faster.
+
+## YAML frontmatter
+
+Every `SKILL.md` must begin with a YAML frontmatter block. The file must start with `---` on the very first line. Missing or misplaced frontmatter causes the validation script to skip all subsequent checks for that skill.
+
+### Required fields
+
+<CardGroup cols={2}>
+  <Card title="name" icon="tag">
+    Lowercase, hyphen-separated identifier. Must exactly match the folder name. Maximum 64 characters. No spaces, no uppercase letters.
+  </Card>
+  <Card title="description" icon="align-left">
+    One or two sentences explaining what the skill does and when to use it. Must include trigger phrases and be under 1024 characters.
+  </Card>
+</CardGroup>
+
+### Minimum frontmatter example
+
+This is the minimum valid frontmatter from `CONTRIBUTING.md`. Both fields are required — a skill without either will fail validation.
+
+```yaml
+---
+name: my-new-skill
+description: >
+  One or two sentences explaining what the skill does and when to use it. Include specific trigger phrases the user might say, like "write a post about", "score my draft", or "build me a carousel". The first word of the description should be a verb or action.
+---
+```
+
+<Note>
+  The `>` after `description:` is a YAML block scalar. It lets you write a multi-line description that the parser joins into a single string. Use it for any description longer than one short line.
+</Note>
+
+## Description requirements
+
+The `description` field does more than explain the skill. Claude uses it to decide when to load the skill. A weak description means Claude misses valid triggers.
+
+<CardGroup cols={2}>
+  <Card title="Trigger phrases" icon="zap">
+    Include the exact phrases a user might say to activate the skill. Examples: "write a post about", "score my draft", "build me a carousel". The validation script checks for the words "use" or "when" as a proxy for trigger phrasing.
+  </Card>
+  <Card title="Length limit" icon="ruler">
+    The description must be non-empty. The validator warns (but does not fail) if it exceeds 1024 characters. Keep it focused on what the skill does and when to use it.
+  </Card>
+</CardGroup>
+
+<Warning>
+  The first word of the description should be a verb or action. Starting with a noun or the skill name makes the description harder for Claude to match against user intent.
+</Warning>
+
+## Naming conventions
+
+The `name` field and the folder name are the same string. Validation fails if they do not match.
+
+| Rule | Correct | Incorrect |
+|------|---------|-----------|
+| Lowercase only | `post-writer` | `Post-Writer` |
+| Hyphens for spaces | `voice-builder` | `voice_builder` |
+| Verb-object or noun phrase | `post-writer` | `writing-posts` |
+| Three words maximum | `post-writer` | `linkedin-post-writing-tool` |
+| Max 64 characters | `my-new-skill` | _(64+ char string)_ |
+| Folder name = YAML name | folder: `post-writer`, name: `post-writer` | folder: `post-writer`, name: `postwriter` |
+
+## Skill body structure
+
+The body follows a standard template. You can adapt the number of steps, but the three structural anchors — auto-start directive, numbered steps, and Rules section — must all be present.
+
+```markdown
+# Skill Name
+
+## CRITICAL: Auto-start on load
+
+When this skill triggers, go straight to Step 1. Do not summarise. Start immediately.
+
+## Step 1. Gather inputs
+[Use AskUserQuestion where possible]
+
+## Step 2. [Main work]
+
+## Step 3. Output
+[Code block showing the exact output format]
+
+## Rules
+[Non-negotiables. Voice rules, word limits, what never to do]
+```
+
+### Auto-start section
+
+The auto-start block tells Claude to begin executing immediately when the skill loads. Without it, Claude may summarise the skill or ask for confirmation before running — which breaks the user experience.
+
+<Tip>
+  Be explicit in the auto-start block about what Claude must NOT do. The `voice-builder` skill lists six specific behaviours to avoid (summarise, describe files, explain how it works, etc.) because Claude needs clear negative constraints, not just positive instructions.
+</Tip>
+
+### Steps section
+
+Each step is a second-level heading (`## Step N. Name`). Steps should be sequential and build on each other. If a step collects input, use `AskUserQuestion` rather than asking questions in chat.
+
+### Rules section
+
+The Rules section at the bottom of the skill body contains non-negotiables. Every rule uses "never" or "always" phrasing to make it unambiguous. This is where you put voice constraints, word limits, output format requirements, and dependency checks.
+
+## File size limit
+
+`SKILL.md` must stay under 500 lines. The validation script warns (but does not fail) if your file exceeds this. Long files slow Claude's loading and make skills harder to maintain.
+
+<Info>
+  If your skill needs reference tables, lookup data, or sample content, move that material to `references/` inside the skill folder. Reference Claude loads only when needed, not on every trigger.
+</Info>
+
+## Folder structure
+
+A skill folder can contain up to four things:
+
+```
+skills/my-new-skill/
+├── SKILL.md          # Required
+├── references/       # Optional — reference material loaded on demand
+├── assets/           # Optional — templates, sample outputs, static files
+└── scripts/          # Optional — shell scripts the skill runs via tool call
+```
+
+The validation script checks for the presence of `references/`, `scripts/`, and `assets/` subdirectories and reports them as passing checks if found. Their absence is not a failure.
+
+<Accordion title="When to use each subdirectory">
+  **references/** — Long lookup tables, sample content the skill loads via `"use samples"`, or any material the user may never need but the skill should have access to. The `voice-builder` skill stores starter writing samples in `references/sample-content.md`.
+
+  **assets/** — Output templates, formatting examples, or any static file the skill tells Claude to produce or read. If your skill always produces the same boilerplate file, put the template here.
+
+  **scripts/** — Shell scripts invoked by a tool call inside the skill. Put scripts here rather than embedding shell commands inline in `SKILL.md`.
+</Accordion>
+
+## Validation script
+
+The validation script checks every skill in `skills/` against the spec. Run it from the repo root before opening any PR.
+
+```bash
+./validate-skills.sh
+```
+
+### What it checks
+
+<Tabs>
+  <Tab title="Failures (exit code 1)">
+    Any of these causes the script to exit with a non-zero code, which blocks the PR:
+
+    - `SKILL.md` is missing from the folder
+    - Folder name contains uppercase letters, spaces, or characters other than lowercase alphanumerics and hyphens
+    - `SKILL.md` does not start with `---` (frontmatter absent)
+    - `name` field is missing from frontmatter
+    - `name` field does not match the folder name
+    - `name` exceeds 64 characters
+    - `description` field is missing or empty
+  </Tab>
+  <Tab title="Warnings (non-blocking)">
+    These are reported but do not cause a non-zero exit code:
+
+    - `description` exceeds 1024 characters
+    - `description` does not contain "use" or "when" (trigger phrasing missing)
+    - `SKILL.md` exceeds 500 lines
+  </Tab>
+  <Tab title="Passing checks">
+    Each of these prints a green pass line:
+
+    - Folder name matches the valid format
+    - `name` field matches the folder name
+    - `description` is present and within the length limit
+    - `description` contains trigger phrasing
+    - `SKILL.md` is within the 500-line limit
+    - Optional subdirectories (`references/`, `scripts/`, `assets/`) are present
+  </Tab>
+</Tabs>
+
+### Reading the output
+
+The script prints a summary at the end with counts of passed checks, warnings, and failures broken down per skill:
+
+```
+Validating skills in /path/to/skills
+
+voice-builder
+  ✓ folder name valid
+  ✓ name matches folder
+  ✓ description present (487 chars)
+  ✓ description has trigger phrasing
+  ✓ SKILL.md size OK (258 lines)
+  ✓ has references/ folder
+
+Summary
+  Skills checked: 1
+  Passed:   6
+  Warnings: 0
+  Failed:   0
+```
+
+A non-zero `Failed` count causes the script to exit with code `1`. Fix all failures before opening a PR.

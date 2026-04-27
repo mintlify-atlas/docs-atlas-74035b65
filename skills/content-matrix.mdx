@@ -1,0 +1,115 @@
+---
+title: "Content Matrix: 32+ LinkedIn Post Ideas from Your Pillars"
+description: "Generate 32+ LinkedIn post ideas in one table. Pairs your pillars with 8 proven formats for specific, usable ideas. Based on the Justin Welsh matrix."
+---
+
+The Content Matrix skill generates a month of LinkedIn post ideas in a single table by crossing your content pillars against eight proven content formats. Based on the Justin Welsh content matrix method, every cell in the table is a specific post idea — not a theme or a vague suggestion. Each idea is tailored to the exact combination of pillar and format it sits in. The output is a markdown table you can copy into Notion and use immediately.
+
+## Trigger phrases
+
+```
+give me post ideas
+content matrix
+what should I post about
+generate post ideas
+content ideation
+map out my content for the month
+```
+
+## Prerequisites
+
+No API keys required. The skill uses `about-me.md` and `voice.md` if they exist. Without them, it asks for your background and pillars directly.
+
+<Tip>
+  If `about-me.md` exists in your project, the skill reads it and pre-fills your context automatically, then tells you what it pulled. You only need to confirm or adjust your pillars.
+</Tip>
+
+## Workflow
+
+<Steps>
+  <Step title="Gather inputs">
+    The skill checks for `about-me.md`. If found, it pre-fills your background and skips that question.
+
+    It then asks for your content pillars. Three options:
+
+    - **Type them** — provide 3–5 pillars of your own
+    - **Pull from voice.md** — use topics already defined in your voice files
+    - **Suggest them** — the skill reads `about-me.md`, proposes 4 pillars covering your positioning, and asks you to confirm or edit before continuing
+
+    Minimum 3 pillars. Maximum 5. Fewer than 3 produces a matrix that is too narrow; more than 5 dilutes it.
+  </Step>
+  <Step title="Build the matrix">
+    The skill generates a table with your pillars as rows and the 8 content formats as columns. Every cell contains one specific, concrete post idea. No idea is reused across different pillars.
+
+    If `voice.md` exists, the language of every idea is tuned to match your voice.
+  </Step>
+  <Step title="Output and highlight">
+    The full table is output in a markdown code block for easy copying into Notion. Below the table, the skill names the single strongest idea across the entire matrix and explains why.
+  </Step>
+  <Step title="Offer the next move">
+    The skill asks if you want to turn any cell into a full post using the Post Writer or Post Formatter skill, referenced by cell position (e.g. "Pillar 2 / Contrarian").
+  </Step>
+</Steps>
+
+## The eight content formats
+
+These eight formats always appear as columns, always in this order:
+
+<CardGroup cols={2}>
+  <Card title="Actionable" icon="check">
+    Ultra-specific how-to. Teaches the reader to do one thing. No theory — just the steps.
+  </Card>
+  <Card title="Motivational" icon="heart">
+    Inspirational story about someone who did something extraordinary in the niche.
+  </Card>
+  <Card title="Analytical" icon="chart-bar">
+    A breakdown of why something works the way it does. Data, logic, and reasoning.
+  </Card>
+  <Card title="Contrarian" icon="arrow-left-right">
+    Goes against the common advice in the niche and backs it up. The best performing format for polarising your audience in a useful direction.
+  </Card>
+  <Card title="Observation" icon="eye">
+    A hidden, silent, or underdiscussed trend the author has noticed. First-person perspective is essential.
+  </Card>
+  <Card title="X vs Y" icon="scale-balanced">
+    A comparison of two entities: tools, styles, frameworks, companies, or approaches.
+  </Card>
+  <Card title="Present vs Future" icon="clock">
+    Current state vs a specific prediction, with the reasoning behind the shift.
+  </Card>
+  <Card title="Listicle" icon="list">
+    A list of resources, tips, mistakes, lessons, or steps. Specific number in the headline.
+  </Card>
+</CardGroup>
+
+## What a good cell looks like
+
+Each cell contains a specific headline idea, not a theme:
+
+| | Actionable | Contrarian | Listicle |
+|---|---|---|---|
+| **LinkedIn growth** | The 3-line hook formula I use to open every high-performing post | Stop optimising your posting time — consistency matters more than timing | 7 LinkedIn posts that got me 10k followers (and what made them work) |
+| **AI tools** | How to use Claude to turn a 1-hour interview into 5 posts in 20 minutes | AI will not replace copywriters — it will replace copywriters who use it badly | 5 AI tools that save me 8 hours a week (and 2 I deleted after a month) |
+
+<Warning>
+  "AI tools" is not a post idea. "How to use Claude to turn a 1-hour interview into 5 posts in 20 minutes" is a post idea. The skill enforces specificity in every cell.
+</Warning>
+
+## Rules and constraints
+
+- Minimum 3 pillars, maximum 5
+- Every cell idea must be specific to that pillar AND that format — no reusing the same idea across pillars
+- Language is tuned to `voice.md` if the file exists
+- British English unless `voice.md` specifies American
+- No em dashes
+
+## Example trigger phrases
+
+```
+Give me post ideas for this month.
+Content matrix — my pillars are leadership, AI, and remote work.
+What should I post about? Pull my pillars from voice.md.
+Generate post ideas based on my about-me.md.
+Map out my content — suggest 4 pillars for me.
+Content ideation session — I do SaaS marketing.
+```

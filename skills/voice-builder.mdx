@@ -1,0 +1,225 @@
+---
+title: "Voice Builder: Build Your AI Voice Profile"
+description: "Run a short interview and analyse 3–5 writing samples to create about-me.md and voice.md — the files every other skill reads before drafting a line."
+---
+
+Voice Builder is the foundation of the entire Social Media Skills system. Before any other skill can write in your voice, draft a post, or score a piece of content, it needs to know who you are and how you write. This skill runs a structured interview to capture your identity, audience, and beliefs, then analyses samples of your real writing to extract precise voice patterns — sentence rhythm, hook style, tone, and the things your voice specifically avoids. The result is two files Claude references automatically across every task: `about-me.md` and `voice.md`.
+
+<Info>
+  Run `voice-builder` first. Every other skill in the system — from `post-writer` to `reels-scripting` — reads `about-me.md` and `voice.md` before writing anything.
+</Info>
+
+## Trigger phrases
+
+Voice Builder activates when you say any of the following:
+
+- "build my voice"
+- "learn my voice"
+- "set up my content system"
+- "onboard me"
+- "train on my writing"
+- "train on my posts"
+- "I want Claude to sound like me"
+
+It also triggers automatically for first-time users who need a voice foundation before writing anything, and when you drop a batch of writing samples into chat at the start of a project.
+
+<Warning>
+  When the skill loads, it goes straight to the interview — no summary, no explanation, no preamble. Your very next message from Claude will be the first batch of interview questions.
+</Warning>
+
+## The 6-step workflow
+
+<Steps>
+  <Step title="Run the About Me interview (Batch 1)">
+    Claude asks four questions using an interactive form. These establish who you are, who you write for, what topics you want to own, and the distinctive point of view that sets you apart from the consensus.
+
+    <Accordion title="Batch 1 questions">
+      | Question | Header | Input type |
+      |---|---|---|
+      | What is your name and what do you do? | About you | Single select with free text — options: Founder, Marketing lead, Creator, Sales leader |
+      | Who are you writing for? | Audience | Single select — options: Founders and CEOs, Marketers, Job seekers, Other professionals |
+      | What are the 3 to 5 topics you want to be known for? | Topics | Multi-select — options: AI and automation, Marketing, Leadership, Personal brand |
+      | What is your point of view on your industry — the thing you believe that others do not? | Hot take | Single select — options: Most advice is wrong, People overcomplicate it, A big shift is coming |
+    </Accordion>
+  </Step>
+
+  <Step title="Run the About Me interview (Batch 2)">
+    Immediately after you answer Batch 1, Claude asks two more questions. These define your brand promise — the single thought you want to own in readers' minds — and the topics you refuse to write about.
+
+    <Accordion title="Batch 2 questions">
+      | Question | Header | Input type |
+      |---|---|---|
+      | What is the one thing you want people to think when they see your name? | Brand promise | Single select — options: This person is practical, This person is honest, This person is ahead |
+      | What is one thing you refuse to write about? | Off limits | Single select — options: Politics, Personal life, Competitors |
+    </Accordion>
+
+    <Note>
+      If any answer is blank or skipped, Claude asks that specific question once more in chat before moving on.
+    </Note>
+  </Step>
+
+  <Step title="Write about-me.md">
+    Claude creates `about-me.md` in your project root using your interview answers. Every line is something Claude will reference when writing content on your behalf.
+
+    See [What voice-builder produces](#what-voice-builder-produces) below for the exact file structure.
+  </Step>
+
+  <Step title="Ask for writing samples">
+    Claude asks you to paste 3 to 5 pieces of writing to learn from. These can be LinkedIn posts, newsletter issues, essays, blog posts, emails, tweets, or any other published writing — yours or someone whose voice you admire.
+
+    <Tip>
+      If you don't have samples ready, type `use samples` and Claude loads a curated starter set from the skill's reference library. You can swap them out for your own writing later.
+    </Tip>
+
+    A minimum of 3 samples is required before analysis. If you paste fewer than 3, Claude asks for more.
+  </Step>
+
+  <Step title="Analyse the samples">
+    Claude reads every sample and looks for patterns across all of them — not individual quirks from a single piece. It extracts four categories of signal:
+
+    <AccordionGroup>
+      <Accordion title="Voice signals">
+        - Average sentence length
+        - Paragraph rhythm (single line breaks, blank lines, staccato versus flowing)
+        - Hook or opening style (contrarian, question, data point, story, confession, observation)
+        - Point of view (first person, second person, observational)
+        - Tone (deadpan, warm, blunt, playful, clinical)
+        - Signature phrases or recurring words
+        - CTA or closing style
+      </Accordion>
+      <Accordion title="Structural signals">
+        - Length range across all samples
+        - Lists versus prose ratio
+        - How content opens and how it closes
+        - How transitions are handled
+      </Accordion>
+      <Accordion title="Topic signals">
+        - Subjects that appear across multiple samples
+        - Who the audience appears to be from the writing itself
+        - What the author clearly stands for
+      </Accordion>
+      <Accordion title="Absence signals">
+        Patterns are as important as presence. Claude logs what is consistently missing across the samples:
+        - Words and punctuation the author never uses (for example, em dashes absent from 0 of 5 samples)
+        - Hook types the author never deploys
+        - Tones the author never hits
+        - Structures the author consistently avoids
+
+        Every item in the Off-limits and "What this voice never does" sections of `voice.md` must be backed by observed absence, not by a generic banned-words template.
+      </Accordion>
+    </AccordionGroup>
+
+    <Warning>
+      If samples contradict each other, Claude notes the contradiction in `voice.md` rather than smoothing it over. The file reflects what is actually in the samples.
+    </Warning>
+  </Step>
+
+  <Step title="Write voice.md and confirm">
+    Claude creates `voice.md` — a single integrated profile covering both how the voice writes and what it avoids. Claude then confirms both files are in your project and lists what you can do next.
+
+    See [What voice-builder produces](#what-voice-builder-produces) below for the exact file structure.
+  </Step>
+</Steps>
+
+## What voice-builder produces
+
+Voice Builder creates two files in your project root.
+
+<CardGroup cols={2}>
+  <Card title="about-me.md" icon="user">
+    Who you are, your audience, your topic pillars, your point of view, your brand promise, and what you refuse to write about. Kept under 300 words. Every line is actionable context for Claude.
+  </Card>
+  <Card title="voice.md" icon="pen-line">
+    The integrated voice profile — positive signals (how the voice writes) and absence signals (what the voice avoids) in one document. Kept under 500 words. Drawn entirely from the actual samples.
+  </Card>
+</CardGroup>
+
+### about-me.md structure
+
+```
+# About Me
+
+## Name and role
+[From interview question 1]
+
+## Audience
+[From question 2, expanded into 2 to 3 sentences on who the reader is]
+
+## Topic pillars
+[3 to 5 topics from question 3, one line each]
+
+## Point of view
+[From question 4, the contrarian or distinctive belief, written as a clear statement]
+
+## Brand promise
+[From question 5, the one thought the author wants to own in the reader's head]
+
+## Off limits
+[From question 6, topics or angles never to write about]
+```
+
+### voice.md structure
+
+```
+# Voice Profile
+
+## Who I sound like
+[2 to 3 sentences describing the overall voice in plain language]
+
+## Tone
+[3 to 5 attributes the voice consistently hits, followed by 1 to 2 tones it never hits]
+
+## Sentence rhythm
+[Average length, pacing, paragraph structure. Avoidance patterns included.]
+
+## Hook patterns
+[3 to 5 hook types observed, one example each. Hook types absent across all samples noted.]
+
+## How I open
+[1 to 2 sentences. Opening moves the voice avoids noted if a clear pattern exists.]
+
+## How I close
+[1 to 2 sentences, CTA style included. Closing moves the voice avoids noted.]
+
+## Signature phrases
+[Recurring words or phrases from the samples]
+
+## Off-limits
+[Words, punctuation, or constructions absent from every sample. Backed by observed absence only.]
+
+## What this voice never does
+[3 to 5 specific behaviours drawn from gaps in the samples]
+```
+
+## What to do after voice-builder
+
+Once `about-me.md` and `voice.md` are in your project, Claude tells you exactly what is available next:
+
+<CardGroup cols={2}>
+  <Card title="Newsletter voice" icon="newspaper" href="/skills/newsletter-voice">
+    Say "build my newsletter voice" to layer newsletter-specific writing instructions on top of your voice profile.
+  </Card>
+  <Card title="Write a post" icon="pencil" href="/skills/post-writer">
+    Say "write a post" to draft a LinkedIn post in your voice.
+  </Card>
+  <Card title="Design a graphic" icon="image" href="/skills/graphic-designer">
+    Say "design a graphic" to create a visual for a post.
+  </Card>
+  <Card title="Score my post" icon="chart-bar" href="/skills/post-scorer">
+    Say "score my post" to get feedback on a draft against your real post history.
+  </Card>
+</CardGroup>
+
+## Rules
+
+Voice Builder follows these constraints on every run:
+
+- **Go straight to Step 1.** No summary, no explanation, no preamble when triggered.
+- **Work from the samples.** Never invent patterns that are not in the writing.
+- **Minimum 3 samples.** Ask for more if fewer than 3 are provided.
+- **Note contradictions.** If samples conflict, record the contradiction in `voice.md` rather than resolving it arbitrarily.
+- **Keep files tight.** `about-me.md` under 300 words. `voice.md` under 500 words.
+- **Absence signals are observed, not assumed.** Every item in the off-limits section must be backed by absence across the actual samples.
+- **British English** throughout, unless the samples are clearly American.
+- **No em dashes** in any output file or in any drafted content.
+- **Output samples in code blocks** so line breaks and whitespace are preserved exactly.

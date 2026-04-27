@@ -1,0 +1,121 @@
+---
+title: "Niche Research: Surface 20 Trending Stories in 7 Days"
+description: "Surface 20 niche stories from the last 7 days. Drives a browser through Reddit, X, and Google with verified dates. No invented links or stale content."
+---
+
+The Niche Research skill surfaces the 20 most relevant stories in a niche from the last 7 days by driving a browser through Reddit, X (Twitter), and Google like a human researcher. Every item is verified against its publish date before it enters the output. Anything older than 7 days is excluded without exception. The result is a table of trending themes, representative links, attention signals, and shareable angles ready to turn into LinkedIn posts.
+
+<Warning>
+  This skill requires live browsing capability. The preferred method is the Claude for Chrome extension. Without it, the skill falls back to Playwright MCP, then WebSearch tools. If none of these can cover Reddit and X feed scrolling properly, the skill tells you what is missing rather than faking the scan.
+</Warning>
+
+## Trigger phrases
+
+```
+research my niche
+what's trending
+find stories
+this week's news
+content research
+```
+
+You can also drop a niche name directly and ask what's happening in it.
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Claude for Chrome extension" icon="chrome">
+    The preferred browsing method. Must be enabled with permission to browse the current tab. Enables real feed scrolling on Reddit and X.
+  </Card>
+  <Card title="Playwright MCP" icon="code">
+    Fallback if Chrome extension is not available. Provides similar browser control capabilities.
+  </Card>
+</CardGroup>
+
+<Info>
+  `about-me.md` is optional. If it exists and names a clear niche, the skill can pull the niche automatically without asking. If the file does not name a clear niche, you are asked to type it.
+</Info>
+
+## Workflow
+
+<Steps>
+  <Step title="Gather the niche">
+    You choose to type the niche directly or have the skill pull it from `about-me.md`. If `about-me.md` does not contain a clear niche, the skill falls back to asking you to type it.
+  </Step>
+  <Step title="Browse like a human researcher">
+    The skill drives the browser through three sources in sequence. Every item found is checked against its publish date. Anything older than 7 days is discarded immediately.
+
+    **Reddit feed scanning:**
+    The home feed and `/r/popular` are scrolled and loaded. Niche-relevant posts are opened and checked for their "posted X days ago" timestamp. Niche-specific subreddits discovered during scrolling are also checked.
+
+    **X (Twitter) feed scanning:**
+    The For You feed is scrolled across multiple screens. Full threads are opened for niche-relevant tweets. The timestamp on each thread is verified before inclusion.
+
+    **Google web searches:**
+    Five searches are run in sequence, each filtered to the past week:
+    - `[niche] news`
+    - `[niche] launch`
+    - `[niche] controversy`
+    - `[niche] research`
+    - `[niche] regulation`
+
+    For every result, the page is opened and the visible publish date is located and verified.
+  </Step>
+  <Step title="Synthesise into themes">
+    Related items are grouped into themes. Each theme may combine social discussion and news coverage. A theme is included only if it shows at least two of: strong attention or discussion, clear disagreement or debate, novel insight or new information, real-world implications for the niche.
+
+    The target is 20 themes. Fewer is acceptable if the filter genuinely limits it — weak items are never padded in.
+  </Step>
+  <Step title="Output the table">
+    The output begins with a date stamp in `DD/MM/YYYY` format, followed by a full markdown table. No prose outside the table.
+  </Step>
+  <Step title="Offer the next move">
+    After the table, the skill asks if you want to turn any row into a LinkedIn post using the Post Writer or Post Formatter skill, referenced by row number.
+  </Step>
+</Steps>
+
+## Output format
+
+The table uses these exact columns:
+
+| Column | Contents |
+|---|---|
+| Theme / Emerging Story | The topic or event |
+| Platforms | Reddit, X, News — where it was found |
+| Key Communities / Accounts / Sources | Subreddits, accounts, or publications driving the discussion |
+| Representative Links | Real, verified URLs from the research |
+| Attention Signals | Engagement indicators (upvotes, replies, shares) |
+| What's Happening or Being Debated | A factual summary of the discussion |
+| Why It Matters for [NICHE] | Relevance to the specific niche |
+| Shareable Angle | A specific angle for a LinkedIn post |
+
+## Rules and constraints
+
+<AccordionGroup>
+  <Accordion title="Date verification is non-negotiable">
+    Every publish date must be verified before an item is included. No shortcuts. Items with missing, unclear, or unverifiable dates are excluded.
+  </Accordion>
+  <Accordion title="7-day window is strict">
+    Anything older than 7 days is excluded without exception, even if engagement is very high.
+  </Accordion>
+  <Accordion title="No invented content">
+    Links, metrics, and dates are never invented or approximated. If a link cannot be verified, it is not included.
+  </Accordion>
+  <Accordion title="Table only">
+    No commentary, summary paragraph, or prose outside the table. The date stamp precedes the table, then nothing else.
+  </Accordion>
+  <Accordion title="Honest about coverage gaps">
+    If the available tools cannot cover Reddit and X feed scrolling, the skill tells you exactly what is missing rather than substituting incomplete data.
+  </Accordion>
+</AccordionGroup>
+
+## Example trigger phrases
+
+```
+Research my niche — I am in the AI marketing space.
+What's trending in B2B SaaS this week?
+Find stories for me to post about — pull my niche from about-me.md.
+Content research — niche is personal finance for millennials.
+This week's news in the creator economy.
+What's happening in the no-code space right now?
+```

@@ -1,0 +1,122 @@
+---
+title: "Gemini Infographic: Hand-Drawn Whiteboard Style"
+description: "Turn any post, newsletter, or research note into a hand-drawn whiteboard infographic prompt for Gemini. The format that drove 480k impressions across 3 posts."
+---
+
+The `gemini-infographic` skill converts written content into a structured image generation prompt for Gemini's Create Image feature. It produces the hand-drawn whiteboard aesthetic — marker pen on paper, wobbly lines, coloured highlights — that drove 480,000 impressions across just three posts. You paste the finished prompt into Gemini, and a ready-to-publish 1080x1350 infographic comes out the other side.
+
+<Note>
+  This skill outputs a prompt to paste into Gemini's **Create Image** feature. No API key is required. Open a new Gemini chat, enable Create Image, select the Nano Banana model, and paste the prompt directly.
+</Note>
+
+## Trigger phrases
+
+Tell Claude any of the following to activate the skill:
+
+- "whiteboard infographic"
+- "gemini infographic"
+- "hand-drawn graphic"
+- "turn this into a whiteboard"
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Source content" icon="file-text">
+    A post, newsletter section, blog extract, research note, or raw bullet points. The skill works with any written input.
+  </Card>
+  <Card title="voice.md (optional)" icon="microphone">
+    If present, the skill reads your voice profile. British English is the default unless voice.md specifies otherwise.
+  </Card>
+  <Card title="brand-kit.md or colours.md (optional)" icon="palette">
+    If a brand file exists in the project, the skill bakes your brand colours directly into the visual suggestions.
+  </Card>
+  <Card title="Gemini with Create Image" icon="image">
+    No API key needed. Use Gemini's built-in Create Image feature with the Nano Banana model selected.
+  </Card>
+</CardGroup>
+
+## How it works
+
+<Steps>
+  <Step title="Paste your source content">
+    The skill asks you to paste the content you want to turn into an infographic. A post, newsletter section, blog extract, research note, or raw bullet points all work.
+  </Step>
+  <Step title="Review the brief">
+    Claude analyses the content and produces a structured infographic brief. The brief includes:
+
+    - **Title** (6 words or fewer, punchy)
+    - **Subtitle** (optional, one line of context)
+    - **Core structure**: steps, framework, comparison, stats, or list
+    - **Key points**: 3 to 7 bullets, each 10 words or fewer
+    - **Visual suggestions**: specific arrows, boxes, highlighted numbers, icons, and colour accents with placement notes
+    - **Footer CTA**: handwritten text with your name, tagline, and a repost prompt
+
+    You review the brief and either request changes or say "generate" to proceed.
+  </Step>
+  <Step title="Receive the Gemini prompt">
+    Once you approve the brief, the skill outputs the complete image generation prompt in a code block, with your brief inserted into the template. The prompt specifies the whiteboard medium, marker pen texture, handwritten typography, and the 1080x1350 vertical format.
+  </Step>
+  <Step title="Paste into Gemini and generate">
+    Copy the prompt into a new Gemini chat with Create Image enabled and Nano Banana selected. Generate at 1080x1350. If the first result misses, return to Claude with specific feedback and the prompt is rewritten.
+  </Step>
+</Steps>
+
+## The output prompt
+
+The finished prompt follows this template, with your brief inserted at the placeholder:
+
+```text gemini-infographic prompt
+Generate a single image of a physical, hand-drawn infographic on a large whiteboard or notebook page.
+
+Crucial Style Instructions (Read First):
+
+Medium: The image must look like a photograph of a real whiteboard or large paper notepad.
+
+Texture: All elements must look created by hand using colored marker pens (black, blue, red, green) and highlighters (yellow/orange). Lines should be slightly imperfect, wobbly, and have the texture of ink on a surface.
+
+No Digital Fonts: All text, headings, and bullet points must appear handwritten or hand-printed in marker pen.
+
+Layout: Structure the 1080x1350 image as follows:
+
+[Your brief — title, subtitle, core structure, key points, visual suggestions]
+
+Use multi-colored markers for emphasis. Keep text large and legible. Make everything look hand-drawn with slight imperfections. Make it look like a photograph of an actual notebook page.
+
+Always include the handwritten text "Follow [Name] [Tagline] for more helpful content | Repost ♻️" at the bottom of the image, in the same hand-drawn marker style.
+```
+
+## Iteration loop
+
+After you generate the first image, the skill offers a revision loop. Common fixes include:
+
+<AccordionGroup>
+  <Accordion title="Fewer colours">
+    If the image feels cluttered, ask for a two-colour version — black marker with one highlight colour.
+  </Accordion>
+  <Accordion title="Bigger title">
+    If the title is hard to read at feed size, ask the skill to rewrite the visual suggestion to emphasise the heading.
+  </Accordion>
+  <Accordion title="Different layout direction">
+    Switch between horizontal flow (left-to-right steps) and vertical stack (numbered list) depending on the structure of your content.
+  </Accordion>
+</AccordionGroup>
+
+## Rules and constraints
+
+<Warning>
+  The 1080x1350 vertical format is non-negotiable. Horizontal infographics lose visibility on the LinkedIn feed.
+</Warning>
+
+| Rule | Detail |
+|---|---|
+| Format | 1080x1350 pixels, vertical |
+| Key points | 3 to 7 bullets, 10 words maximum each |
+| Footer | Always includes the recycle symbol and "Repost" |
+| Language | British English unless voice.md specifies otherwise |
+| Approval | Brief must be approved before the final prompt is output |
+| Brand colours | Pulled from brand-kit.md or colours.md if present |
+| Em dashes | Never used in any output |
+
+<Tip>
+  The whiteboard style works because it looks real, not polished. Resist the urge to prompt for cleaner lines or digital-style typography — the imperfection is what makes it feel human and scroll-stopping.
+</Tip>

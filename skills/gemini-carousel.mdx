@@ -1,0 +1,142 @@
+---
+title: "Gemini Carousel: Slide-by-Slide LinkedIn Builder"
+description: "Generate branded LinkedIn carousel slides using Gemini. Builds a slide-by-slide brief, waits for approval, then outputs one prompt per slide."
+---
+
+The `gemini-carousel` skill turns any piece of written content into a full set of branded LinkedIn carousel slides. It works slide by slide: first building a design brief you review and approve, then outputting one Gemini image generation prompt per slide — each in its own code block, numbered clearly. Generating slides individually gives you control over visual consistency across the set, something a single combined prompt rarely achieves.
+
+<Note>
+  This skill outputs prompts to paste into Gemini's **Create Image** feature. No API key is required. Open a new Gemini chat, enable Create Image, select the Nano Banana model, and paste each slide prompt one at a time.
+</Note>
+
+## Trigger phrases
+
+Tell Claude any of the following to activate the skill:
+
+- "carousel"
+- "build a carousel"
+- "turn this into a carousel"
+- "gemini carousel"
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Source content" icon="file-text">
+    A post, newsletter section, research notes, or a framework. The skill adapts the structure to fit the number of slides you choose.
+  </Card>
+  <Card title="Brand colours" icon="palette">
+    You can pull colours from brand-kit.md, type hex codes manually, or let the skill suggest a palette based on the content.
+  </Card>
+  <Card title="voice.md (optional)" icon="microphone">
+    Guides language and tone. British English is the default unless voice.md specifies otherwise.
+  </Card>
+  <Card title="Gemini with Create Image" icon="image">
+    No API key needed. Use Gemini's built-in Create Image feature with the Nano Banana model. Generate slides one at a time.
+  </Card>
+</CardGroup>
+
+## How it works
+
+<Steps>
+  <Step title="Paste your content and choose settings">
+    The skill asks you to paste the content you want in the carousel, then asks two questions: your brand style preference and how many slides you want.
+
+    **Brand style options:**
+    - Pull from `brand-kit.md` — uses your project's exact hex codes and typography
+    - Type brand colours — paste hex codes and font preferences directly
+    - Suggest for me — the skill picks a palette based on the content
+
+    **Slide count options:**
+    - 6 slides (concise, fast read)
+    - 8 slides (standard carousel length)
+    - 10 slides (deep-dive carousel)
+  </Step>
+  <Step title="Review the slide-by-slide brief">
+    Claude analyses the content and produces a brief for every slide:
+
+    - **Slide 1 (Cover)**: hook, large bold text direction, opening visual
+    - **Slides 2 to N-1 (Body)**: one idea per slide, maximum 15 words of body text, specific visual suggestion
+    - **Slide N (CTA)**: repost ask, name, link or offer
+
+    Each slide entry includes:
+    - Slide number
+    - Headline (max 8 words)
+    - Body text (max 15 words)
+    - Visual suggestion (icon, colour block, illustration, or diagram)
+
+    Review the brief and either request changes or say "generate" to proceed. **The skill does not output image prompts until you explicitly approve.**
+  </Step>
+  <Step title="Receive one prompt per slide">
+    Once you approve, the skill outputs a numbered Gemini image generation prompt for every slide, each in its own code block. The brand style is kept identical across all prompts so the finished set looks like one coherent carousel.
+  </Step>
+  <Step title="Generate slides in Gemini">
+    Paste each prompt into a new Gemini chat with Create Image enabled and Nano Banana selected. Generate one slide at a time for maximum control over consistency. If a slide drifts from the others, regenerate that slide before moving on.
+  </Step>
+</Steps>
+
+## The slide prompt structure
+
+Every per-slide prompt follows this format:
+
+```text example slide prompt
+Act as an expert graphic designer. Create a LinkedIn carousel slide at 1080x1350 pixels (4:5 aspect ratio).
+
+Brand style:
+- Primary colour: [HEX]
+- Secondary colour: [HEX]
+- Accent colour: [HEX]
+- Typography: [bold industrial headline font, clean geometric body font]
+- Aesthetic: modern, authoritative, high contrast
+
+Slide [N of M]: [slide purpose]
+
+Content:
+- Headline: "[headline text]"
+- Body: "[body text]"
+- Visual element: [specific visual suggestion]
+
+Layout instructions:
+- [Headline placement and size]
+- [Body placement and size]
+- [Visual placement]
+- [Background treatment]
+
+Constraints:
+- Vertical 4:5 aspect ratio at exactly 1080x1350 pixels
+- No watermarks, no logos unless specified above
+- Maintain visual consistency with the other slides in the set
+```
+
+## One-shot alternative
+
+After the per-slide prompts, the skill offers a single combined prompt that generates the full carousel in one generation pass.
+
+<Tabs>
+  <Tab title="Slide-by-slide (recommended)">
+    One prompt per slide. More control. Each slide can be regenerated independently if it misses. The brand style is locked across all prompts so the set stays coherent.
+  </Tab>
+  <Tab title="One-shot combined">
+    A single prompt asking Gemini to generate all slides at once. Faster to paste, but visual consistency is harder to control. Say "combine" after receiving the per-slide prompts to get this version.
+  </Tab>
+</Tabs>
+
+## Rules and constraints
+
+<Warning>
+  The approval gate between the brief and the image prompts is mandatory. The skill will not output prompts until you say "generate" or an equivalent confirmation.
+</Warning>
+
+| Rule | Detail |
+|---|---|
+| Format | 1080x1350 pixels per slide, vertical 4:5 ratio |
+| Body text | 15 words maximum per slide |
+| Cover slide | Must be visually distinct from body slides |
+| CTA slide (last) | Must be visually distinct from body slides |
+| Brand consistency | Identical hex codes and typography in every prompt |
+| Language | British English unless voice.md specifies otherwise |
+| Em dashes | Never used in any output |
+| brand-kit.md | If present, exact hex codes and typography are used |
+
+<Tip>
+  Keep the brand style locked from slide one. If you change the hex codes mid-set, the carousel will look like it came from two different creators. The skill enforces consistency across every prompt — do not override the colour values when pasting into Gemini.
+</Tip>

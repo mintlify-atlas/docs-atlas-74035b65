@@ -1,0 +1,168 @@
+---
+title: "LinkedIn Analytics: React Dashboard & Strategy Report"
+description: "Convert a LinkedIn Analytics XLSX export into an interactive React dashboard and a written analysis with 5 data-backed content recommendations."
+---
+
+The Analytics Dashboard skill takes a LinkedIn Analytics export file and produces two outputs: an interactive dark-themed React dashboard with five chart panels, and a written strategic analysis with five specific content recommendations backed by the numbers. Every metric displayed comes directly from the export — nothing is invented or estimated. The skill is designed to run monthly so patterns surface over time rather than as one-off snapshots.
+
+## Trigger phrases
+
+This skill activates when you say any of the following:
+
+- "analyse my LinkedIn"
+- "LinkedIn analytics"
+- "build my dashboard"
+- "review my performance"
+- upload a LinkedIn Analytics export file directly
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="LinkedIn Analytics export" icon="file-spreadsheet">
+    An XLSX file exported from LinkedIn Analytics. Set your date range to 30, 60, or 90 days for meaningful patterns. Export from LinkedIn Analytics → **Export** button in the top right.
+  </Card>
+  <Card title="Date range guidance" icon="calendar">
+    30 days is the minimum for usable trend data. 90 days surfaces day-of-week and posting-time patterns more reliably. Run monthly for compounding insight.
+  </Card>
+</CardGroup>
+
+<Note>
+If any sheet has missing columns or an unexpected date range, the skill flags the data quality issue instead of silently working around it.
+</Note>
+
+## Expected export sheets
+
+The skill reads every sheet in the file. It expects these five:
+
+| Sheet | Contents |
+|---|---|
+| **DISCOVERY** | Overall impressions and reach |
+| **ENGAGEMENT** | Daily impressions and engagements over time |
+| **TOP POSTS** | Top 50 posts ranked by engagements and by impressions (two tables merged and de-duplicated) |
+| **FOLLOWERS** | Daily new followers plus total follower count |
+| **DEMOGRAPHICS** | Job titles, locations, industries, seniority, company size, top companies |
+
+## Workflow
+
+<Steps>
+  <Step title="Upload the export file">
+    Upload your LinkedIn Analytics XLSX file when prompted. The skill accepts the file directly — no manual data extraction required.
+  </Step>
+
+  <Step title="Parse and clean the data">
+    All five sheets are read. The two TOP POSTS tables (ranked by engagements and by impressions) are merged into one unified dataset per post and de-duplicated. Messy headers are cleaned automatically.
+  </Step>
+
+  <Step title="Build the interactive React dashboard">
+    A single React artifact is generated with a dark background (`#0f1117`) and high-contrast chart colours. All visualisations use Recharts. The layout is responsive for laptop and large displays.
+
+    **Numbers are formatted for readability:** `67K` not `67000`, `1.2M` not `1200000`.
+  </Step>
+
+  <Step title="Read the written strategic analysis">
+    Below the dashboard, a concise written analysis covers five sections and closes with five specific content recommendations. See the [analysis structure](#written-strategic-analysis) below.
+  </Step>
+
+  <Step title="Act on a recommendation">
+    After the analysis, the skill offers to draft any of the five recommendations as a full post. Call the post-writer or post-formatter skill with the recommendation number to proceed.
+  </Step>
+</Steps>
+
+## Dashboard panels
+
+<AccordionGroup>
+  <Accordion title="Headline metrics — top row">
+    Seven summary cards displayed at the top:
+
+    - Total impressions
+    - Total reach
+    - Total new followers
+    - Average daily impressions
+    - Average daily engagements
+    - Average engagement rate (engagements / impressions)
+    - Total posts tracked
+
+    Total follower count is displayed prominently at the top of the page.
+  </Accordion>
+
+  <Accordion title="Engagement trend — line chart">
+    Daily impressions (left y-axis) and engagements (right y-axis) plotted over the full date range. The top 3 spike days are highlighted with markers.
+  </Accordion>
+
+  <Accordion title="Follower growth — area chart">
+    Daily new followers with a 7-day moving average trendline overlaid. Cumulative follower gain is shown alongside.
+  </Accordion>
+
+  <Accordion title="Post performance scatter">
+    Each post plotted with impressions on the x-axis and engagements on the y-axis. Posts are colour-coded into four quadrants:
+
+    - **Stars** — high reach + high engagement
+    - **Viral but shallow** — high reach + low engagement
+    - **Niche gold** — low reach + high engagement
+    - **Underperformers** — low reach + low engagement
+
+    Dots are hoverable and show the post URL and date.
+  </Accordion>
+
+  <Accordion title="Day-of-week heatmap">
+    Average impressions and engagements broken down by day of week. Strongest days are highlighted to inform posting schedule decisions.
+  </Accordion>
+
+  <Accordion title="Audience breakdown — bar charts">
+    Five bar charts covering:
+
+    - Job titles
+    - Industries
+    - Seniority levels
+    - Company size
+    - Top locations
+  </Accordion>
+</AccordionGroup>
+
+## Written strategic analysis
+
+The analysis below the dashboard is structured into five sections followed by five recommendations.
+
+<CardGroup cols={2}>
+  <Card title="Performance summary" icon="chart-line">
+    Trajectory (growing, plateauing, or declining) derived from trendlines. Current engagement rate compared to LinkedIn benchmarks for accounts of that size.
+  </Card>
+  <Card title="Top post patterns" icon="star">
+    Analysis of the top 10 posts by impressions and top 10 by engagements. Patterns across posting day, time of month, and content themes. Signals from high-impression/low-engagement and low-impression/high-engagement posts.
+  </Card>
+  <Card title="Audience-content fit" icon="users">
+    Who the core audience is based on demographics. Which topics and formats would resonate. Segments worth leaning into or away from.
+  </Card>
+  <Card title="Growth velocity" icon="trending-up">
+    Average daily follower growth. Projections at current pace for 30, 60, and 90 days. Acceleration or deceleration trends identified.
+  </Card>
+</CardGroup>
+
+### Day and timing strategy
+
+Best days for impressions and best days for engagement, drawn from the heatmap data. Includes an optimal posting schedule recommendation based on the data.
+
+### 5 specific content recommendations
+
+Each recommendation includes:
+
+- Content angle or topic
+- Why the data supports it
+- Which audience segment it targets
+- Expected impact based on patterns in the export
+
+<Tip>
+Use the engagement rate figure from this analysis in any LinkedIn profile or pitch deck context. "2.3% engagement rate" lands far better than "strong engagement" — the skill is designed to give you the numbers.
+</Tip>
+
+## Rules and constraints
+
+<Warning>
+The skill never invents metrics not present in the export. All numbers displayed in the dashboard and cited in the analysis come directly from the file you upload.
+</Warning>
+
+- Use numbers, not adjectives. "Engagement rate is 2.3%" beats "engagement is healthy".
+- Flag data quality issues (missing columns, unexpected date ranges) rather than silently working around them.
+- No em dashes in the written analysis.
+- British English unless `voice.md` specifies otherwise.
+- Run monthly. Patterns only surface over time.

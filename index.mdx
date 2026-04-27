@@ -1,133 +1,67 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
-icon: 'star'
+title: "Social Media Skills: AI-powered content system"
+description: "17 Claude skills covering voice, LinkedIn, Reels, YouTube, analytics, and community. The same system behind 350k+ followers and 100m+ views a year."
 ---
 
-## Setting up
+Social Media Skills is the complete set of Claude AI skills behind Charlie Hills' content system — 350k+ followers across LinkedIn, Instagram, Substack, X and YouTube, generating over 100 million views per year. Install these skills and Claude learns your voice, writes in your style, scores your drafts against real data, and produces ready-to-publish content across every channel.
 
-Get your documentation site up and running in minutes.
-
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
-
-## Make it yours
-
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get from zero to your first AI-written post in under 10 minutes
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Installation" icon="download" href="/installation">
+    Four ways to install — Claude Code, clone, submodule, or individual upload
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="Voice Builder" icon="microphone" href="/skills/voice-builder">
+    The foundation skill — build your voice profile before using anything else
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="All Skills" icon="grid-2" href="/skills/post-writer">
+    Browse every skill from post writing to analytics dashboards
   </Card>
-</Columns>
+</CardGroup>
 
-## Create beautiful pages
+## How the system works
 
-Everything you need to create world-class documentation.
+Every skill reads your voice profile. Run `voice-builder` once to create `about-me.md` and `voice.md`, then every other skill references those files automatically before writing a single line.
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+<Steps>
+  <Step title="Build your voice">
+    Run `voice-builder` to complete a short interview and analyse 3–5 writing samples. Creates `about-me.md` and `voice.md` in your project.
+  </Step>
+  <Step title="Pick a skill">
+    Tell Claude what you want to create. It picks the right skill from trigger phrases like "write a post", "score my draft", or "make me a carousel".
+  </Step>
+  <Step title="Review and ship">
+    Every skill outputs content in a code block, explains its choices, and offers a revision loop. Say "ship it" to save the final version.
+  </Step>
+</Steps>
 
-## Make your content agent ready
+## Skills by category
 
-Make your docs work for humans and AI agents alike.
+<CardGroup cols={2}>
+  <Card title="Voice Foundation" icon="user" href="/skills/voice-builder">
+    `voice-builder` and `newsletter-voice` — build the profile every other skill reads
+  </Card>
+  <Card title="LinkedIn" icon="linkedin" href="/skills/post-writer">
+    Post writing, scoring, formatting, graphics, hooks, content matrix, and niche research
+  </Card>
+  <Card title="Visual Content" icon="image" href="/skills/gemini-infographic">
+    Gemini-powered infographics, carousels, quote posts, and YouTube thumbnails
+  </Card>
+  <Card title="Reels, Community & Analytics" icon="chart-bar" href="/skills/reels-scripting">
+    Instagram Reels scripting, pinned comments, and LinkedIn analytics dashboards
+  </Card>
+</CardGroup>
 
-<Columns cols={2}>
-  <Card
-    title="Prompt component"
-    icon="robot"
-    href="/agent-ready/prompt"
-  >
-    Embed shareable AI prompts readers can copy or open in Cursor.
-  </Card>
-  <Card
-    title="Visibility"
-    icon="eye"
-    href="/agent-ready/visibility"
-  >
-    Show different content to humans and agents reading your docs.
-  </Card>
-  <Card
-    title="Contextual menu"
-    icon="bolt"
-    href="/agent-ready/contextual"
-  >
-    Give readers one-click access to Claude, ChatGPT, Cursor, and more.
-  </Card>
-  <Card
-    title="AI coding tools"
-    icon="wand-magic-sparkles"
-    href="/ai-tools/claude-code"
-  >
-    Set up Claude Code, Cursor, or Windsurf with Mintlify's skill.
-  </Card>
-</Columns>
+## Prerequisites
 
-## Need inspiration?
+Two skills require external API keys. All others work out of the box with Claude.
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+| Variable | Required for |
+|---|---|
+| `APIFY_API_TOKEN` | `post-scorer`, `reels-scripting` |
+| `GOOGLE_AI_API_KEY` | `reels-scripting` (Gemini 2.5 Flash video analysis) |
+
+<Note>
+  Image generation skills (`gemini-infographic`, `gemini-carousel`, `quote-post`, `youtube-thumbnail`, `profile-optimizer`) output ready-to-paste prompts for Gemini's Create Image feature — no API key needed.
+</Note>

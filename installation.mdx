@@ -1,0 +1,172 @@
+---
+title: "Installing Social Media Skills: all 5 methods compared"
+description: "Five ways to install Social Media Skills: Claude Code marketplace, git clone, individual upload, git submodule, or fork. Includes API key setup."
+---
+
+Social Media Skills can be installed in five different ways depending on how you work with Claude. The Claude Code plugin marketplace is the fastest option and keeps skills up to date automatically. Cloning or using a git submodule gives you more control. Individual upload works if you only need one or two skills in Claude Desktop. Forking is the right choice if you want to swap in your own voice rules.
+
+<Warning>
+  Whichever method you choose, run `voice-builder` before using any other skill. Every downstream skill depends on `about-me.md` and `voice.md` being present in your project.
+</Warning>
+
+## Installation methods
+
+<Tabs>
+  <Tab title="Plugin marketplace">
+    The fastest method. Two commands install all 17 skills into your Claude Code session. Skills update when the upstream repo updates.
+
+    Open Claude Code and run:
+
+    ```bash
+    /plugin marketplace add charlie947/social-media-skills
+    ```
+
+    ```bash
+    /plugin install social-media-skills
+    ```
+
+    Claude confirms once the plugin is installed and the skills are active in your session.
+
+    <Tip>
+      This is the recommended method for most users. You get all skills immediately and there is nothing to clone or manage manually.
+    </Tip>
+  </Tab>
+
+  <Tab title="Clone and copy">
+    Clone the repo and copy all skills into your Claude skills directory. This gives you a local copy you can inspect and modify.
+
+    ```bash
+    git clone https://github.com/charlie947/social-media-skills.git
+    cp -r social-media-skills/skills/* ~/.claude/skills/
+    ```
+
+    All 17 skill folders are now available in `~/.claude/skills/`. Claude picks them up automatically from this directory.
+  </Tab>
+
+  <Tab title="Individual upload">
+    Use this method if you work in Claude Desktop and only need one or two specific skills. Each skill is zipped and uploaded through the Customise skills menu.
+
+    ```bash
+    cd social-media-skills/skills
+    zip -r voice-builder.skill voice-builder
+    ```
+
+    Then open Claude Desktop, go to **Customise skills**, and upload `voice-builder.skill`.
+
+    Repeat for any additional skills you need. Available skill folder names:
+
+    - `voice-builder`
+    - `newsletter-voice`
+    - `profile-optimizer`
+    - `post-writer`
+    - `graphic-designer`
+    - `post-scorer`
+    - `reels-scripting`
+    - `youtube-thumbnail`
+    - `pinned-comment`
+    - `hook-generator`
+    - `post-formatter`
+    - `content-matrix`
+    - `niche-research`
+    - `gemini-infographic`
+    - `gemini-carousel`
+    - `quote-post`
+    - `analytics-dashboard`
+
+    <Note>
+      Upload `voice-builder` first. Every other skill depends on the files it produces.
+    </Note>
+  </Tab>
+
+  <Tab title="Git submodule">
+    Add the skills repo as a submodule inside your existing project. This keeps skills versioned alongside your project and lets you pin to a specific release.
+
+    ```bash
+    git submodule add https://github.com/charlie947/social-media-skills.git .agents/social-media-skills
+    ```
+
+    Then reference skills from `.agents/social-media-skills/skills/` in your project configuration.
+
+    To update to the latest version later:
+
+    ```bash
+    git submodule update --remote .agents/social-media-skills
+    ```
+  </Tab>
+
+  <Tab title="Fork and customise">
+    Fork the repo, replace the voice rules with your own, and clone your fork into any project. This is the right choice if you want to maintain a custom set of skills tailored to your brand.
+
+    1. Fork `charlie947/social-media-skills` on GitHub.
+    2. Edit the skill files in `skills/` — particularly `voice-builder` and `newsletter-voice` — to reflect your own voice rules and content system.
+    3. Clone your fork into any project:
+
+    ```bash
+    git clone https://github.com/your-username/social-media-skills.git
+    cp -r social-media-skills/skills/* ~/.claude/skills/
+    ```
+
+    <Tip>
+      Run `./validate-skills.sh` before committing changes to check your modified skills against the skill spec.
+    </Tip>
+  </Tab>
+</Tabs>
+
+## Setting environment variables
+
+Two skills require external API tokens. Set these before using `post-scorer` or `reels-scripting`.
+
+```bash
+export APIFY_API_TOKEN=your_token
+export GOOGLE_AI_API_KEY=your_key
+```
+
+| Variable | Required for | How to get it |
+|---|---|---|
+| `APIFY_API_TOKEN` | `post-scorer`, `reels-scripting` | Create a free account at [apify.com](https://apify.com) and copy your token from Account > Integrations |
+| `GOOGLE_AI_API_KEY` | `reels-scripting` (Gemini 2.5 Flash video analysis) | Generate a key at [aistudio.google.com](https://aistudio.google.com) |
+
+<Note>
+  Image generation skills (`gemini-infographic`, `gemini-carousel`, `quote-post`, `youtube-thumbnail`, `profile-optimizer`) do not need an API key. They output ready-to-paste prompts that you run in a Gemini chat with Create Image enabled.
+</Note>
+
+## Verifying installation
+
+After installing, confirm the skills are available by asking Claude to list them or trigger any skill directly.
+
+```
+Build my voice
+```
+
+If `voice-builder` responds with an interview prompt, the install worked. If Claude does not recognise the skill, check that the skill files are in `~/.claude/skills/` (for clone/copy) or that the plugin is listed as active (for the marketplace method).
+
+<AccordionGroup>
+  <Accordion title="Skills are not being recognised after cloning">
+    Verify the skill folders landed in the right directory:
+
+    ```bash
+    ls ~/.claude/skills/
+    ```
+
+    You should see folders like `voice-builder`, `post-writer`, etc. If the directory is empty, rerun the copy command:
+
+    ```bash
+    cp -r social-media-skills/skills/* ~/.claude/skills/
+    ```
+  </Accordion>
+
+  <Accordion title="post-scorer or reels-scripting throws an API error">
+    The skill cannot reach Apify or Google AI. Confirm your environment variables are exported in the same shell session as Claude Code:
+
+    ```bash
+    echo $APIFY_API_TOKEN
+    echo $GOOGLE_AI_API_KEY
+    ```
+
+    If either command returns an empty line, export the variable again and restart your Claude Code session.
+  </Accordion>
+
+  <Accordion title="Skill output does not sound like my voice">
+    Run `voice-builder` again with richer writing samples. Paste at least 3 examples that represent your best or most distinctive writing. The more specific the samples, the more accurate `voice.md` will be — and every downstream skill reads it before writing anything.
+  </Accordion>
+</AccordionGroup>

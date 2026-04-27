@@ -1,0 +1,156 @@
+---
+title: "YouTube Thumbnail: Title-to-Prompt Workflow"
+description: "Turn a YouTube video title into a branded thumbnail prompt for Gemini. Applies high-CTR composition rules and outputs a ready-to-paste image generation prompt."
+---
+
+The `youtube-thumbnail` skill converts a video title into a complete Gemini image generation prompt for a branded 1280x720 thumbnail. It works the same way the rest of the system approaches LinkedIn graphics: thumbnail first, script second. You set the emotional tone, the hook phrase, and the colour palette in a brief Claude builds for you — then approve it before the image prompt is output. The result is a thumbnail engineered for click-through, not just aesthetics.
+
+<Note>
+  This skill outputs a prompt to paste into Gemini's **Create Image** feature. No API key is required. Open a new Gemini chat, attach your reference photo, enable Create Image, select the Nano Banana model, and paste the prompt. Generate at 1280x720.
+</Note>
+
+## Trigger phrases
+
+Tell Claude any of the following to activate the skill:
+
+- "thumbnail"
+- "youtube thumbnail"
+- "build me a thumbnail"
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Reference photo" icon="camera">
+    A clear headshot with distinctive lighting and expression. Reuse the same reference photo across videos for channel-wide brand consistency. Can be stored in thumbnail-config.md.
+  </Card>
+  <Card title="Video title" icon="video">
+    The working title for the video. The skill derives the hook phrase, composition, and tone directly from the title.
+  </Card>
+  <Card title="brand-kit.md (optional)" icon="palette">
+    If present, the skill reads your exact brand hex codes and uses them in the thumbnail palette.
+  </Card>
+  <Card title="thumbnail-config.md (optional)" icon="settings">
+    Store your reference photo path here for automatic pre-fill. The skill also checks brand-kit.md and about-me.md.
+  </Card>
+</CardGroup>
+
+## How it works
+
+<Steps>
+  <Step title="Provide your reference photo and video title">
+    The skill checks the project for a stored reference photo path in this order: `thumbnail-config.md`, `brand-kit.md`, then `about-me.md`. If none is found, it asks you to upload or provide the path to a headshot.
+
+    Then it asks two questions:
+
+    **Video title:** Type the full working title, or ask the skill to propose three click-worthy title options based on your topic.
+
+    **Emotional tone:** Choose the expression and energy for the thumbnail.
+
+    | Tone | Expression |
+    |---|---|
+    | Shock / surprise | Wide eyes, open mouth, bold reaction |
+    | Curious / thinking | Slight smirk, raised eyebrow, gaze off-frame |
+    | Confident / direct | Eye contact, calm, assertive |
+    | Frustrated / strong take | Intense gaze, hand gesture, tension |
+  </Step>
+  <Step title="Review the thumbnail brief">
+    The skill applies high-CTR thumbnail principles and outputs a concise brief:
+
+    ```text thumbnail brief
+    THUMBNAIL BRIEF: [video title]
+
+    Composition: [face position, % of frame, direction of gaze]
+    Text: "[hook phrase, 3-5 words]"
+    Text placement: [left, right, top, wraps around face]
+    Colour palette: [primary hex], [accent hex], [background hex]
+    Supporting element: [logo / prop / arrow / number]
+    Emotional tone: [tone from step 1]
+    ```
+
+    Review the brief and either request changes or say "generate" to proceed.
+  </Step>
+  <Step title="Receive the Gemini prompt">
+    Once approved, the skill outputs the complete image generation prompt in a code block. The prompt specifies your composition, expression, hook phrase, typography, colour palette, and supporting element — everything Gemini needs to generate the thumbnail.
+  </Step>
+  <Step title="Generate in Gemini">
+    Paste the prompt into a new Gemini chat, attach your reference photo, enable Create Image, and select Nano Banana. Generate at 1280x720. Your reference photo is never included in the prompt text itself — always attach it separately in the Gemini chat.
+  </Step>
+</Steps>
+
+## High-CTR thumbnail principles
+
+The brief is built on these rules, applied automatically:
+
+<CardGroup cols={2}>
+  <Card title="Face fills 30 to 50 percent of the frame" icon="user">
+    Readable at small sizes. Thumbnails are often viewed at mobile resolution before anyone clicks.
+  </Card>
+  <Card title="3 to 5 words of text" icon="type">
+    Maximum 6 if absolutely necessary. The text is a hook phrase, not a sentence. Examples: "I fired my team", "Don't do this".
+  </Card>
+  <Card title="Two colours dominate" icon="palette">
+    Brand primary plus one high-contrast accent — yellow, red, or cyan. More colours create visual noise.
+  </Card>
+  <Card title="High contrast everywhere" icon="sun">
+    Between face, text, and background. The skill includes a squint test: if you squint and the thumbnail loses clarity, the contrast is too low.
+  </Card>
+</CardGroup>
+
+<Warning>
+  Never put text or logos in the bottom-right corner of the thumbnail. YouTube places the watch time icon there, which will cover anything you put in that region.
+</Warning>
+
+## The output prompt
+
+```text youtube-thumbnail prompt
+Using the attached reference photo of me, generate a YouTube thumbnail at 1280 x 720 pixels (16:9).
+
+Composition:
+- Place me [left / right / centre] filling [30-50]% of the frame
+- My expression: [tone details — e.g., shocked with wide eyes and open mouth]
+- My gaze: [direction — e.g., looking directly at camera / looking off-frame toward the text]
+
+Text:
+- Display "[hook phrase]" in large bold sans-serif typography
+- Text colour: [hex]
+- Text outline: [colour, thickness for readability]
+- Text placement: [specific area]
+
+Colour palette:
+- Primary: [hex]
+- Accent: [hex]
+- Background: [hex] — [describe treatment: flat, gradient, blurred scene, etc.]
+
+Supporting element: [specific description of the supporting visual]
+
+Constraints:
+- Face must be clear and sharp
+- Text must be readable at 320px wide (YouTube mobile size)
+- No watermarks, no YouTube UI elements, no bottom-right corner text
+- High contrast between face, text, and background
+```
+
+## Next steps after the thumbnail
+
+After delivering the prompt, the skill offers to outline the video:
+
+<Info>
+  Once you have your thumbnail, the skill can outline the video next: hook, mid-section, and CTA structure derived directly from the thumbnail. Ask Claude to continue with the video outline.
+</Info>
+
+## Rules and constraints
+
+| Rule | Detail |
+|---|---|
+| Format | 1280x720 pixels (16:9), YouTube's native thumbnail size |
+| Text length | 5 words ideal, 3 is best, 6 maximum |
+| Face | Always a visible focal point — no face-hidden compositions |
+| Reference photo | Never included in the prompt text — attach separately in Gemini |
+| Language | British English unless voice.md specifies otherwise |
+| Em dashes | Never used in any output |
+| Brand colours | Pulled from brand-kit.md if present |
+| Channel consistency | The skill recommends keeping the same thumbnail style across all videos for channel recognition |
+
+<Tip>
+  Store your reference photo path in `thumbnail-config.md` at the project root. The skill pre-fills it automatically on every run, saving you the upload step each time.
+</Tip>

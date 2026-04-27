@@ -1,0 +1,129 @@
+---
+title: "Profile Optimizer: Rebuild Your LinkedIn for Conversions"
+description: "Rebuild your LinkedIn for conversions. Produces 3 headlines, a rewritten about section, experience rewrites, a featured section strategy, and 4 prompts."
+---
+
+The Profile Optimizer skill rebuilds every section of your LinkedIn profile around a single conversion goal. It produces three headline options for you to choose from, a human-written about section structured for trust and conversion, rewritten experience entries in narrative format, a featured section strategy with two high-value links, and four fully-formed image generation prompts for your banner, profile picture, and featured section tiles. Everything outputs in code blocks ready to copy straight into LinkedIn.
+
+<Note>
+  If `about-me.md` exists in your project, the skill reads it and pre-fills your name, audience, topics, and point of view before asking any questions. It will tell you what it pulled.
+</Note>
+
+## Trigger phrases
+
+```
+optimize my profile
+fix my LinkedIn
+rewrite my headline
+profile review
+LinkedIn audit
+rebuild my profile
+```
+
+The skill also triggers when you upload a LinkedIn profile PDF or screenshot for review.
+
+## Prerequisites
+
+No API keys required. Image generation prompts are output as text for use with Gemini — no API access needed. `about-me.md` is optional but speeds up input gathering significantly.
+
+## Workflow
+
+<Steps>
+  <Step title="Gather inputs">
+    The skill collects your primary LinkedIn goal, main offer type, brand colours, and social proof in the first batch of questions.
+
+    **Goal options:** Booked calls, inbound leads, newsletter subscribers, or job opportunities
+
+    **Offer options:** Coaching, consulting, agency services, or freelance
+
+    A second batch asks for the external links you want in your featured section and how to access your current profile (paste it, start fresh, or upload a screenshot).
+  </Step>
+  <Step title="Write three headline options">
+    Three headlines are written and output in a code block. You then pick one.
+
+    **Constraints:**
+    - Maximum 50 characters each
+    - Sentence case only (not Title Case)
+    - No job titles ("Founder", "CEO", "Designer")
+    - No filler words
+    - Format: [Core value] + [for target audience]
+
+    The three options cover different angles:
+    - **Direct:** outcome + audience
+    - **Pain-focused:** problem + audience
+    - **Differentiator:** unique angle + audience
+  </Step>
+  <Step title="Write the about section">
+    Output in a code block. Structure: Hook → Struggle/Empathy → Method/Philosophy → Authority → CTA.
+
+    Full sentences throughout. No forced line breaks mid-sentence — LinkedIn handles text wrapping on mobile and desktop. Double line breaks between sections. Tone is punchy, direct, and human.
+  </Step>
+  <Step title="Rewrite the top two experience roles">
+    Output in a code block. Each role follows the structure: Context → Challenge → Action → Result.
+
+    Storytelling format, not bullet points. 8–15 sentences per role maximum. No "Managed a team of…" or "Responsible for…" constructions.
+  </Step>
+  <Step title="Featured section strategy">
+    Two items maximum. Both must be external links.
+
+    - **Item 1:** Primary conversion goal — direct path to main offer (booking page, application form, sales page). Title: 3–5 words, benefit-focused.
+    - **Item 2:** Secondary value builder — build trust or capture leads (newsletter signup, free resource, portfolio, case study). Title: 3–5 words, benefit-focused.
+
+    No subtitles. No internal LinkedIn posts. No "DM me" items.
+  </Step>
+  <Step title="Visual design brief">
+    Four image generation prompts, each in its own code block and fully self-contained for Gemini.
+
+    Brand colours are stated at the top of the brief with a one-line explanation of why they fit the positioning.
+
+    After all four prompts: "Copy each prompt into a new Gemini chat one at a time. For the banner and profile picture, attach your headshot alongside the prompt. The featured tiles do not need a photo."
+  </Step>
+</Steps>
+
+## The four image assets
+
+<CardGroup cols={2}>
+  <Card title="LinkedIn Banner (1584 × 396px)" icon="image">
+    Prompt uses your headshot photo. Places the chosen headline text centre-right, a 5–8 word tagline below it, a CTA button element, and social proof text in brand colours.
+  </Card>
+  <Card title="Profile Picture (400 × 400px)" icon="circle-user">
+    Prompt uses your headshot photo. Applies brand colour background, centres your face at 60–70% of the frame, and ensures it works when cropped to a circle.
+  </Card>
+  <Card title="Featured Tile 1 (552 × 368px)" icon="rectangle-wide">
+    Displays the Featured Item 1 title as the focal point. Brand colours matching the banner. Clean visual cue (arrow icon). No photo needed.
+  </Card>
+  <Card title="Featured Tile 2 (552 × 368px)" icon="rectangle-wide">
+    Displays the Featured Item 2 title. Visually distinct from Tile 1 — primary and secondary colours are swapped. No photo needed.
+  </Card>
+</CardGroup>
+
+## Rules and constraints
+
+<AccordionGroup>
+  <Accordion title="Headline rules">
+    No job titles in headlines. Maximum 50 characters. Sentence case. Lead with core value, not your role or company name.
+  </Accordion>
+  <Accordion title="Copy formatting">
+    All profile copy (headline, about, experience) must be in code blocks. Write full sentences — do not force line breaks mid-sentence. LinkedIn handles wrapping on both mobile and desktop.
+  </Accordion>
+  <Accordion title="Featured section">
+    Maximum two items. Both must be external links. No internal LinkedIn posts, no "DM me" items, no subtitles.
+  </Accordion>
+  <Accordion title="Image prompts">
+    Each prompt must be fully self-contained. The user pastes it cold into Gemini and gets the asset. No prior context required.
+  </Accordion>
+  <Accordion title="Scope">
+    The skill ends at the visual design brief. It does not offer to write a launch post or engagement strategy after delivering the profile.
+  </Accordion>
+</AccordionGroup>
+
+## Example trigger phrases
+
+```
+Optimize my LinkedIn profile.
+Rewrite my headline — I help SaaS founders grow on LinkedIn.
+Fix my LinkedIn about section.
+LinkedIn audit — I will paste my current profile.
+Rebuild my profile from scratch using my about-me.md.
+Profile review — I am uploading a screenshot now.
+```

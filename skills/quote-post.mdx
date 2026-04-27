@@ -1,0 +1,123 @@
+---
+title: "Quote Post: Write the Quote, Generate the Graphic"
+description: "Two-step LinkedIn quote post workflow. Claude writes 9 quote options, you pick one, then Gemini recreates your reference image with the chosen quote baked in."
+---
+
+The `quote-post` skill runs a two-step workflow: Claude writes the quote, Gemini recreates the image. In the first step, Claude generates nine viral motivational quote options — grouped into three categories — matched to the caption you are posting alongside the graphic. In the second step, once you pick a quote, Claude produces a Gemini image generation prompt that recreates a reference image you choose, with the quote baked in as the focal point. The whole process takes minutes.
+
+<Note>
+  This skill outputs a prompt to paste into Gemini's **Create Image** feature. No API key is required. Open a new Gemini chat, attach your reference image, enable Create Image, select the Nano Banana model, and paste the prompt.
+</Note>
+
+## Trigger phrases
+
+Tell Claude any of the following to activate the skill:
+
+- "quote post"
+- "quote graphic"
+- "motivational post"
+- "build me a quote"
+
+## Prerequisites
+
+<CardGroup cols={2}>
+  <Card title="Caption" icon="file-text">
+    The caption this quote graphic will accompany. The quote is written to reinforce the caption's message, not to stand alone.
+  </Card>
+  <Card title="Reference image" icon="image">
+    A style reference from Pinterest, LinkedIn, or Google Images. If you do not have one, the skill suggests four visual styles to choose from.
+  </Card>
+  <Card title="voice.md (optional)" icon="microphone">
+    If present, the skill tunes the quote options to your voice. If your voice is explicitly non-motivational, the skill flags the mismatch before generating.
+  </Card>
+  <Card title="Gemini with Create Image" icon="sparkles">
+    No API key needed. Attach your reference image and paste the prompt into a new Gemini chat with Create Image enabled and Nano Banana selected.
+  </Card>
+</CardGroup>
+
+## How it works
+
+<Steps>
+  <Step title="Paste your caption">
+    The skill asks for the caption this quote graphic will accompany. The quote options are written to reinforce the caption's message and suit the audience reading it.
+  </Step>
+  <Step title="Choose a quote from nine options">
+    Claude returns nine viral motivational quote options grouped into three categories:
+
+    <AccordionGroup>
+      <Accordion title="Category 1: Growth and transformation">
+        Quotes about progress, learning, and becoming. Example: "You don't find the time. You make it."
+      </Accordion>
+      <Accordion title="Category 2: Resilience and grit">
+        Quotes about pushing through difficulty and setback. Example: "Your setback is someone else's setup."
+      </Accordion>
+      <Accordion title="Category 3: Contrarian / bold">
+        Quotes that challenge conventional advice and take a strong position. Example: "Stop asking for permission to start."
+      </Accordion>
+    </AccordionGroup>
+
+    Every quote is under 15 words, punches hard in the first three words, and works as a standalone line without context. Reply with the number and letter of the quote you want (e.g. `2b`), or paste your own if none land.
+  </Step>
+  <Step title="Provide or describe a reference image">
+    The skill asks for a reference image to recreate. You can:
+    - Paste a URL from Pinterest, LinkedIn, or Google Images
+    - Upload an image file
+    - Describe a visual style
+
+    If you describe a style, the skill recommends one of four approaches:
+
+    | Style | Description |
+    |---|---|
+    | Notebook / hand-drawn | Simple sketch, cream background, pen marks |
+    | Minimalist editorial | Large serif type, lots of white space, one accent colour |
+    | Bold poster | Heavy sans-serif, solid colour block background, high contrast |
+    | Polaroid or film photo | Photo texture with text overlay |
+  </Step>
+  <Step title="Receive the Gemini prompt">
+    The skill outputs the complete image generation prompt in a code block, with your chosen quote filled in. Paste it into a new Gemini chat with the reference image attached, Create Image enabled, and Nano Banana selected. Generate at 1080x1350.
+  </Step>
+</Steps>
+
+## The output prompt
+
+```text quote-post prompt
+Recreate the attached reference image with the following quote:
+
+"[CHOSEN QUOTE]"
+
+Critical constraints:
+- Output at exactly 1080 x 1350 pixels (4:5 vertical)
+- Match the style, typography, and colour palette of the reference image
+- Keep the quote as the focal point — centred and legible
+- Attribute nothing (no names, no handles, no logos)
+- Maintain the visual tone of the original but with the new text
+
+The quote must be perfectly spelled and punctuated exactly as written above.
+```
+
+## Honest expectations
+
+Quote posts earn strong engagement but lower impressions than infographics or carousels. The skill flags this after delivering the prompt:
+
+<Info>
+  Quote posts get strong engagement but lower impressions than other formats. It is not the strongest content type. But for the effort, the return is worth it. This takes minutes.
+</Info>
+
+## Rules and constraints
+
+| Rule | Detail |
+|---|---|
+| Format | 1080x1350 pixels, vertical 4:5 ratio |
+| Quote length | 15 words maximum |
+| Attribution | Never fabricated — quotes are written fresh, not sourced from real people unless the user explicitly asks |
+| Language | British English unless voice.md specifies otherwise |
+| Em dashes | Never used in any output |
+| Voice mismatch | If your voice is explicitly non-motivational, the skill flags the mismatch and asks before generating |
+
+<Warning>
+  Horizontal quote graphics get lost on the LinkedIn feed. The 1080x1350 vertical format is non-negotiable.
+</Warning>
+
+<Tip>
+  Reuse the same reference image style across multiple quote posts. Visual consistency builds recognition over time, and Gemini recreates the same aesthetic reliably when anchored to a strong reference.
+</Tip>

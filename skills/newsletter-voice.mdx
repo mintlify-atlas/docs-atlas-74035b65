@@ -1,0 +1,205 @@
+---
+title: "Newsletter Voice: Add Newsletter-Specific Writing Rules"
+description: "Layer newsletter-specific opening formulas, section structure, and formatting rules on top of your voice profile. Produces newsletter-voice.md."
+---
+
+Newsletter Voice builds on the foundation that `voice-builder` creates. Where `voice.md` captures how you write across all formats, this skill goes deeper into the specific structure, opening moves, data philosophy, and formatting rules that make your newsletter feel consistent issue after issue. The result is a single file — `newsletter-voice.md` — that Claude references whenever you ask it to draft a newsletter, layered on top of `about-me.md` and `voice.md` rather than replacing them.
+
+<Warning>
+  This skill requires `voice-builder` to have run first. If `voice.md` or `about-me.md` are missing from your project root, Claude will stop and redirect you to run `voice-builder` before continuing.
+</Warning>
+
+## Trigger phrases
+
+Newsletter Voice activates when you say any of the following:
+
+- "build my newsletter voice"
+- "learn my newsletter style"
+- "set up my newsletter system"
+- "train on my newsletters"
+- "newsletter onboarding"
+
+It also triggers when you drop newsletter samples into chat and ask for an analysis.
+
+## Prerequisites
+
+Before this skill runs, Claude checks your project root for both `voice.md` and `about-me.md`. If either file is missing, it stops and tells you:
+
+> Newsletter voice sits on top of your general voice profile. Run voice-builder first (upload the skill or say "build my voice"), then come back here once about-me.md and voice.md are in the project.
+
+Once both files are present, Claude reads them fully before starting the interview.
+
+<Tip>
+  Run [`voice-builder`](/skills/voice-builder) first, then come back here. The two skills are designed to work in sequence, not in isolation.
+</Tip>
+
+## Two paths: samples or archetype
+
+The skill takes different routes depending on whether you have past newsletter issues to learn from.
+
+<Tabs>
+  <Tab title="Sample-based (recommended)">
+    If you paste 2 or more past newsletter issues, Claude analyses them for patterns across all samples — not one-off quirks from a single issue.
+
+    **What Claude extracts from your samples:**
+
+    <AccordionGroup>
+      <Accordion title="Opening formula">
+        - What the first 3 sentences do (specific result, cultural observation, claim, scene, question)
+        - Length of the opening section before the first structural break
+        - Credibility move — how you establish authority early
+        - Value promise — what you tell the reader they will get from the issue
+      </Accordion>
+      <Accordion title="Section structure">
+        - Problem or contrast setup
+        - Named framework or free prose
+        - Numbered steps, methods, or continuous argument
+        - Examples and evidence patterns
+        - Bonus or extension sections
+        - Closing formula and signoff
+      </Accordion>
+      <Accordion title="Data philosophy">
+        - Specific numbers per issue (counted across samples)
+        - Source attribution style — linked, named, or uncredited
+        - Example-to-abstraction ratio
+        - Whether the author acknowledges limitations or failures
+      </Accordion>
+      <Accordion title="Formatting">
+        - Header usage — frequency and hierarchy
+        - List usage — numbered, bulleted, arrows
+        - Bold and italic usage
+        - Code blocks, blockquotes, or prompt formatting
+        - Visual markers — arrows, checkmarks, emojis if any
+      </Accordion>
+      <Accordion title="Voice markers unique to newsletter format">
+        - Pro tips or callouts — frequency and format
+        - Forward-looking closings
+        - Signoff phrase if consistent across samples
+        - Meta-transparency — whether the author reflects on process or invites feedback
+      </Accordion>
+      <Accordion title="Absence signals">
+        - Words, constructions, or structures absent from every sample
+        - Closing moves the author never uses
+        - Topics the author never touches in a newsletter context
+      </Accordion>
+    </AccordionGroup>
+
+    <Note>
+      If you only have one newsletter sample, Claude will offer to switch to archetype mode and use your single issue as a reference point, since one sample is not enough for pattern detection.
+    </Note>
+  </Tab>
+  <Tab title="Archetype-based">
+    If you don't have past issues ready, type `archetype` and Claude presents six newsletter archetypes to choose from:
+
+    | Archetype | Description |
+    |---|---|
+    | Data tutorial | Numbers, frameworks, step-by-step methods with prompts |
+    | Contrarian essay | Take a position, defend it, name the opposition |
+    | Case study teardown | One subject per issue, unpacked in depth |
+    | Curated digest | 5 to 7 links with your commentary each week |
+    | Personal essay | Reflection on a theme, story-first |
+    | Interview or profile | One person per issue, Q and A or narrative |
+
+    After you pick an archetype, Claude loads the matching defaults from the skill's reference library, then tunes every field using your `voice.md` and `about-me.md` before writing `newsletter-voice.md`.
+
+    <Info>
+      When archetype mode is used, the output file is flagged as archetype-based and you're reminded to re-run the skill with real samples after 5 published issues for a sharper, sample-backed profile.
+    </Info>
+  </Tab>
+</Tabs>
+
+## What newsletter-voice produces
+
+Newsletter Voice creates one file in your project root: `newsletter-voice.md`.
+
+<CardGroup cols={2}>
+  <Card title="newsletter-voice.md" icon="newspaper">
+    Newsletter-specific writing instructions: 800 to 1,200 words covering audience and purpose, voice principles, opening formula, section flow, data and evidence rules, formatting, closing style, absence patterns, and length targets.
+  </Card>
+  <Card title="Works alongside voice.md" icon="layers">
+    `newsletter-voice.md` adds newsletter-specific rules only. It does not duplicate content from `voice.md` or `about-me.md`. When drafting a newsletter, Claude reads all three files together.
+  </Card>
+</CardGroup>
+
+### newsletter-voice.md structure
+
+```
+# Newsletter Voice
+
+## Source
+[Sample-based: analysed X newsletter issues]
+OR
+[Archetype-based: [archetype name] tuned to voice.md. Revisit after 5 published issues.]
+
+## Audience and purpose
+[Who reads this newsletter and what they get. 2 to 3 sentences.]
+
+## Voice principles
+[3 to 5 core principles the writing always holds. Short declarative sentences.]
+
+## Opening formula
+[How issues start. 2 concrete templates with bracketed placeholders.
+Target word count for the opening section.]
+
+## Section flow
+[Standard structure of an issue, section by section, 5 to 8 sections max.
+Notes on what each section does and how long it runs.]
+
+## Data and evidence
+[How numbers and examples are used. Specific rules, e.g. "every claim needs
+a number", "sources linked inline", "example-to-abstraction ratio roughly 3:1".]
+
+## Formatting rules
+[Headers, lists, bold, italic, code blocks, visual markers. What to use,
+what to avoid.]
+
+## Closing and signoff
+[How issues end. Forward-looking or summary. Signoff phrase only if it
+appears consistently across 2 or more samples.]
+
+## What this newsletter never does
+[1 short paragraph or 3 to 5 items. Behaviours only, not a banned-words list.]
+
+## Length
+[Word count target for standard issues. Separate target for longer guides
+if applicable.]
+```
+
+## How newsletter-voice.md differs from voice.md
+
+`voice.md` covers how you write across every format. `newsletter-voice.md` adds the layer that is specific to long-form email publishing.
+
+| Covered in voice.md | Added in newsletter-voice.md |
+|---|---|
+| Sentence rhythm and tone | Opening formula and templates |
+| Hook patterns | Section flow and structure |
+| Signature phrases | Data and evidence philosophy |
+| What the voice avoids | Newsletter-specific formatting rules |
+| General off-limits | Closing and signoff conventions |
+| | Length targets per issue type |
+
+<Note>
+  `newsletter-voice.md` never duplicates content from `voice.md`. It references the base profile and builds on it with newsletter-specific rules only.
+</Note>
+
+## After newsletter-voice is built
+
+Once `newsletter-voice.md` is in your project root alongside `about-me.md` and `voice.md`, you're ready to draft:
+
+> Say "write a newsletter" and Claude uses all three files together.
+
+If you ran the skill in archetype mode, come back after 5 published issues and re-run with real samples for a sharper, evidence-backed profile.
+
+## Rules
+
+Newsletter Voice follows these constraints on every run:
+
+- **Require voice.md and about-me.md.** Stop and redirect to `voice-builder` if either is missing.
+- **Minimum 2 samples for sample-based mode.** Offer archetype mode if fewer are available.
+- **Keep newsletter-voice.md under 1,200 words.** Tight beats exhaustive.
+- **No invented signals.** Work only from samples or archetype defaults tuned to `voice.md`.
+- **No duplication.** `newsletter-voice.md` adds newsletter-specific rules only — it does not repeat content from `voice.md`.
+- **No assumed signoffs.** Only bake in signoff phrases that appear consistently across 2 or more samples.
+- **Absence patterns stay internal.** No separate file for banned words — all absence signals live as a single section inside `newsletter-voice.md`.
+- **British English** throughout, unless samples are clearly American.
+- **No em dashes** in any output file or in any drafted content.

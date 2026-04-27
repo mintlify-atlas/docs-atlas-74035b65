@@ -1,81 +1,107 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
-icon: 'rocket'
+title: "Quickstart: your first AI-written LinkedIn post in minutes"
+description: "Install Social Media Skills, build your voice profile with voice-builder, and publish your first AI-written LinkedIn post in under 10 minutes."
 ---
 
-## Get started in three steps
+The fastest path to a published post is three steps: install the plugin, run `voice-builder` to create your voice profile, then ask Claude to write a post. This page walks you through each step with the exact commands and phrases to use.
 
-Get your documentation site running locally and make your first customization.
+<Info>
+  This quickstart uses the Claude Code plugin marketplace (the fastest install method). If you prefer to clone the repo, use a git submodule, or upload individual skills to Claude Desktop, see the [installation guide](/installation).
+</Info>
 
-### Step 1: Set up your local environment
+<Steps>
+  <Step title="Install the plugin">
+    Open a Claude Code session and run the following two commands in order. The first command registers the marketplace source, the second installs all 17 skills into your project.
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
-    
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+    ```bash
+    /plugin marketplace add charlie947/social-media-skills
+    ```
 
-### Step 2: Deploy your changes
+    ```bash
+    /plugin install social-media-skills
+    ```
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
-</Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
+    Claude will confirm once the skills are installed and available in your session.
+  </Step>
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+  <Step title="Set API keys (optional, for two skills)">
+    Most skills work immediately. If you plan to use `post-scorer` or `reels-scripting`, export the required environment variables before continuing.
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
+    ```bash
+    export APIFY_API_TOKEN=your_token
+    export GOOGLE_AI_API_KEY=your_key
+    ```
 
-### Step 3: Go live
+    <Note>
+      Skip this step if you only want to write posts. `APIFY_API_TOKEN` and `GOOGLE_AI_API_KEY` are only needed for `post-scorer` and `reels-scripting`.
+    </Note>
+  </Step>
 
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
-</Accordion>
+  <Step title="Build your voice profile">
+    `voice-builder` is the foundation. Every other skill reads `about-me.md` and `voice.md` before it writes a single word, so run this first.
 
-## Next steps
+    In Claude, type:
 
-Now that you have your docs running, explore these key features:
+    ```
+    Build my voice
+    ```
+
+    Claude will run a short interview asking about your background, audience, and goals, then ask you to paste 3–5 examples of your existing writing. At the end it produces two files in your project:
+
+    - `about-me.md` — your background, audience, and positioning
+    - `voice.md` — your writing rules, tone, and style patterns
+
+    <Tip>
+      Paste writing samples that represent your best work — posts that performed well, newsletter sections you are proud of, or any copy that sounds most like you. The richer the samples, the more accurate the voice profile.
+    </Tip>
+  </Step>
+
+  <Step title="Write your first post">
+    With your voice profile in place, ask Claude to write a post on any topic:
+
+    ```
+    Write me a post about how AI is changing content creation
+    ```
+
+    Claude picks the `post-writer` skill, reads your `voice.md` and `about-me.md`, and drafts a LinkedIn post in your voice. It will explain its choices and offer a revision loop.
+
+    Other trigger phrases that route to the right skill automatically:
+
+    | What you type | Skill used |
+    |---|---|
+    | `"Write me a post about..."` | `post-writer` |
+    | `"Score this draft against my history"` | `post-scorer` |
+    | `"Make me a carousel from this"` | `gemini-carousel` |
+    | `"What should I post this week"` | `niche-research` or `content-matrix` |
+    | `"Turn this outlier Reel into a script"` | `reels-scripting` |
+    | `"I need a thumbnail for 'How I fired my team'"` | `youtube-thumbnail` |
+    | `"Write me a pinned comment"` | `pinned-comment` |
+  </Step>
+
+  <Step title="Review and publish">
+    Claude outputs the post in a code block and explains why it made each structural choice. You can:
+
+    - Ask for changes: `"Make the hook more direct"` or `"Cut the last line"`
+    - Ask for alternatives: `"Give me 3 different hooks for this"`
+    - Accept as-is: `"Ship it"` to save the final version to your project
+
+    Copy the final post from the code block and paste directly into LinkedIn.
+  </Step>
+</Steps>
+
+## What to explore next
 
 <CardGroup cols={2}>
-
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
-
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
-
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="All installation methods" icon="download" href="/installation">
+    Clone, submodule, individual upload, or fork — five ways to install
+  </Card>
+  <Card title="Voice builder" icon="microphone" href="/skills/voice-builder">
+    Detailed guide to getting the most accurate voice profile
+  </Card>
+  <Card title="Post writer" icon="pen-to-square" href="/skills/post-writer">
+    All trigger phrases, inputs, and revision options for post-writer
+  </Card>
+  <Card title="Post scorer" icon="chart-bar" href="/skills/post-scorer">
+    Score any draft against your real post history via Apify
+  </Card>
 </CardGroup>
-
-<Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
-</Note>

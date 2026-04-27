@@ -1,0 +1,123 @@
+---
+title: "Hook Generator: 6 LinkedIn Hook Variations for Any Topic"
+description: "Generate six two-line hooks for any LinkedIn topic: number-led, contrarian, transformation, authority steal, admission, and future shock in one output."
+---
+
+The Hook Generator skill produces six distinct two-line hooks for any LinkedIn topic in one shot. Every hook follows the same formula: a 40-character opening line that states something unexpected or specific, followed by a 40-character contrast line that contradicts, reframes, or undercuts it. The output is fast, there is no preamble, and every hook includes a digit or metric where possible.
+
+## Trigger phrases
+
+```
+write me hooks
+hook ideas
+generate hooks
+I need a hook for a post about [topic]
+```
+
+You can also paste a topic with any of these phrases and the skill skips the follow-up question entirely.
+
+## Prerequisites
+
+No API keys or voice files required. If `voice.md` exists in your project, the skill tunes the language to match it. The skill works without it.
+
+## The six hook types
+
+Each output covers all six angles, so you get one hook per type every time:
+
+<CardGroup cols={2}>
+  <Card title="Number-led" icon="hash">
+    Leads with a specific number or metric. Creates authority and specificity immediately.
+
+    Example structure: `[Number] [outcome]` / `[Contradiction or reveal]`
+  </Card>
+  <Card title="Contrarian" icon="arrow-left-right">
+    States a widely-held belief, then flips it. Creates tension and curiosity before the reader sees the body.
+  </Card>
+  <Card title="Personal transformation" icon="person-walking">
+    Before vs after with a digit. Shows change over time, with a number anchoring the result.
+  </Card>
+  <Card title="Authority steal" icon="star">
+    References a name, tool, or brand the audience already trusts. Borrows credibility to create immediate interest.
+  </Card>
+  <Card title="Admission" icon="triangle-exclamation">
+    Confesses a mistake or loss. Counterintuitively high-performing because it signals honesty and breaks the pattern of self-promotional feeds.
+  </Card>
+  <Card title="Future shock" icon="bolt">
+    A prediction or "X is about to change" statement. Creates urgency and positions the author as a forward-thinking voice.
+  </Card>
+</CardGroup>
+
+## Workflow
+
+<Steps>
+  <Step title="Get the topic">
+    If you pasted a topic in the same message as the trigger phrase, the skill uses it and moves directly to writing. Otherwise it asks: "What topic do you want hooks for?"
+  </Step>
+  <Step title="Write 6 hook variations">
+    The skill writes one hook per angle. Every hook is two lines, 40 characters maximum per line. At least one "How I" or "I" statement appears across the six variations. Digits are preferred over spelled numbers.
+  </Step>
+  <Step title="Output and next move">
+    The six hooks are output in a labelled code block. The skill then asks if you want to build one into a full post using the Post Formatter skill.
+  </Step>
+</Steps>
+
+## Output format
+
+```
+HOOKS for [topic]
+
+1. [Number-led]
+[Line 1]
+[Line 2]
+
+2. [Contrarian]
+[Line 1]
+[Line 2]
+
+3. [Personal transformation]
+[Line 1]
+[Line 2]
+
+4. [Authority steal]
+[Line 1]
+[Line 2]
+
+5. [Admission]
+[Line 1]
+[Line 2]
+
+6. [Future shock]
+[Line 1]
+[Line 2]
+```
+
+## Rules and constraints
+
+<AccordionGroup>
+  <Accordion title="Character limits">
+    40 characters maximum per line, for both lines of every hook. The skill counts characters before output. Hooks that exceed the limit are rewritten, not delivered long.
+  </Accordion>
+  <Accordion title="No questions in the opening line">
+    Questions are not permitted in Line 1. The opening must state something — unexpected, specific, or punchy. Questions belong in the body, not the hook.
+  </Accordion>
+  <Accordion title="Digits over words">
+    The number 3 is used, not "three". Metrics and specific figures appear wherever possible across the six variations.
+  </Accordion>
+  <Accordion title="No hedging">
+    A weak hook is worse than no hook. The skill does not soften or qualify. Every line earns its place.
+  </Accordion>
+</AccordionGroup>
+
+<Tip>
+  Once you pick a hook, say "build this into a full post" and reference the number (e.g. "use hook 3"). The Post Formatter skill will take it from there and apply your preferred framework.
+</Tip>
+
+## Example trigger phrases
+
+```
+Write me hooks for a post about cold email.
+Hook ideas for a post about burnout.
+Generate hooks — topic is AI replacing copywriters.
+I need a hook for a post about why LinkedIn reach is collapsing.
+Hooks for a post about my first £100k year.
+```

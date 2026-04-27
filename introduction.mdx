@@ -1,0 +1,97 @@
+---
+title: "Social Media Skills: the AI content system explained"
+description: "17 Claude skills that learn your voice, write LinkedIn posts, script Reels, generate graphics, and surface analytics — all from one shared voice profile."
+---
+
+Social Media Skills is the complete set of Claude AI skills behind Charlie Hills' content system — 350k+ followers across LinkedIn, Instagram, Substack, X and YouTube, generating over 100 million views a year. The skills are open-source markdown files that give Claude specialised knowledge and workflows for specific content tasks. Install them once and Claude learns your voice, writes in your style, scores your drafts against real data, and produces ready-to-publish content across every channel.
+
+<CardGroup cols={2}>
+  <Card title="Voice foundation" icon="user" href="/skills/voice-builder">
+    `voice-builder` and `newsletter-voice` — build the shared profile every other skill reads
+  </Card>
+  <Card title="LinkedIn" icon="linkedin" href="/skills/post-writer">
+    Post writing, scoring, formatting, graphics, hooks, content matrix, and niche research
+  </Card>
+  <Card title="Visual content" icon="image" href="/skills/gemini-infographic">
+    Gemini-powered infographics, carousels, quote posts, and YouTube thumbnails
+  </Card>
+  <Card title="Reels, community & analytics" icon="chart-bar" href="/skills/reels-scripting">
+    Instagram Reels scripting, pinned comments, and LinkedIn analytics dashboards
+  </Card>
+</CardGroup>
+
+## What skills are
+
+Skills are markdown files that give Claude specialised knowledge and workflows for specific tasks. When you install these in your project, Claude recognises when you are working on a social media task and applies the right patterns, voice rules, and platform constraints automatically. There is no code to run — Claude reads the skill file and acts on it.
+
+## How skills work together
+
+Every skill reads shared context. `voice-builder` is the foundation: it produces `about-me.md` and `voice.md` from an interview plus 3–5 writing samples. Every other skill checks those files first before drafting a single line. `newsletter-voice` adds a further layer for newsletter-specific writing rules, and every downstream skill — post-writer, reels-scripting, analytics-dashboard — inherits from that chain automatically.
+
+```
+                    ┌──────────────────────────────────────┐
+                    │           voice-builder              │
+                    │   about-me.md + voice.md             │
+                    │   (read by every skill below)        │
+                    └──────────────────┬───────────────────┘
+                                       │
+                    ┌──────────────────▼───────────────────┐
+                    │         newsletter-voice             │
+                    │   newsletter-voice.md                │
+                    │   (the source every piece comes from)│
+                    └──────────────────┬───────────────────┘
+                                       │
+     ┌────────────┬────────────┬───────┴───────┬────────────┬────────────┐
+     ▼            ▼            ▼               ▼            ▼            ▼
+┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐ ┌──────────┐ ┌──────────┐
+│ Profile  │ │LinkedIn  │ │ Video    │ │ Analytics &  │ │Community │ │Standalone│
+│          │ │ posts    │ │          │ │ Scoring      │ │          │ │          │
+├──────────┤ ├──────────┤ ├──────────┤ ├──────────────┤ ├──────────┤ ├──────────┤
+│profile-  │ │post-     │ │reels-    │ │post-scorer   │ │pinned-   │ │hook-gen  │
+│optimizer │ │writer    │ │scripting │ │              │ │comment   │ │content-  │
+│          │ │graphic-  │ │youtube-  │ │analytics-    │ │          │ │matrix    │
+│          │ │designer  │ │thumbnail │ │dashboard     │ │          │ │niche-    │
+│          │ │          │ │          │ │              │ │          │ │research  │
+│          │ │post-form │ │          │ │              │ │          │ │gemini-*  │
+│          │ │          │ │          │ │              │ │          │ │quote-post│
+└──────────┘ └──────────┘ └──────────┘ └──────────────┘ └──────────┘ └──────────┘
+```
+
+## All 17 skills
+
+| Skill | Description |
+|---|---|
+| `voice-builder` | Build `about-me.md` and `voice.md` from an interview plus 3–5 writing samples. The foundation every other skill reads. |
+| `newsletter-voice` | Add newsletter-specific writing instructions on top of voice-builder. Produces `newsletter-voice.md`. |
+| `profile-optimizer` | Rebuild a LinkedIn profile for conversions. Headline, about, experience, featured section, plus 4 image generation prompts. |
+| `post-writer` | Draft LinkedIn posts in your voice using the voice files. |
+| `graphic-designer` | Pick between HTML/CSS graphic and AI-generated infographic based on the post content. |
+| `post-scorer` | Pull your post history via Apify and score any draft against what actually performs for you. |
+| `reels-scripting` | Reverse-engineer an outlier Reel via Apify + Gemini 2.5 Flash. Write a new script in your voice from your newsletter. |
+| `youtube-thumbnail` | Turn a video title into a branded YouTube thumbnail prompt for Gemini. |
+| `pinned-comment` | Meme-style pinned comments with a matching image generation prompt. |
+| `hook-generator` | 6 clickbait-style two-line hook variations per topic. |
+| `post-formatter` | Topic to ready-to-publish post using PAS, AIDA, BAB, STAR, or SLAY. |
+| `content-matrix` | Pair your pillars with 8 formats for 32+ post ideas in one table. Justin Welsh style. |
+| `niche-research` | Drive Claude for Chrome to scroll Reddit, X, and Google with verified dates. Surfaces the 20 most relevant stories in your niche from the last 7 days. |
+| `gemini-infographic` | The whiteboard style that pulled 480k impressions from 3 posts. |
+| `gemini-carousel` | Slide-by-slide carousel generator with an approval gate. |
+| `quote-post` | Claude writes the quote, Gemini recreates the image with the quote baked in. |
+| `analytics-dashboard` | LinkedIn Analytics export to interactive React dashboard plus 5 data-backed recommendations. |
+
+## Prerequisites
+
+Most skills work immediately with Claude and require no external services. Two skills use external APIs for data scraping and video analysis.
+
+| Variable | Required for |
+|---|---|
+| `APIFY_API_TOKEN` | `post-scorer`, `reels-scripting` |
+| `GOOGLE_AI_API_KEY` | `reels-scripting` (Gemini 2.5 Flash video analysis) |
+
+<Note>
+  Image generation skills (`gemini-infographic`, `gemini-carousel`, `quote-post`, `youtube-thumbnail`, `profile-optimizer`) output ready-to-paste prompts for Gemini's Create Image feature. You run them in a separate Gemini chat with Create Image enabled — no API key required.
+</Note>
+
+<Tip>
+  Start with `voice-builder` before using any other skill. Without `about-me.md` and `voice.md`, every downstream skill falls back to generic output instead of your voice.
+</Tip>

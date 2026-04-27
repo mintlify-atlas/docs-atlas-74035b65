@@ -1,24 +1,11 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "name": "Social Media Skills",
+  "projectType": "general",
+  "projectName": "Social Media Skills",
+  "projectDescription": "A collection of 17 Claude AI skills that power Charlie Hills' social media content system, covering voice profiling, LinkedIn post creation, Instagram Reels scripting, YouTube thumbnails, analytics, and community management.",
   "theme": "almond",
-  "colors": {
-    "primary": "#dc956e",
-    "light": "#344479",
-    "dark": "#84748c"
-  },
-  "favicon": "https://media.brand.dev/499a3cc5-d255-4711-b753-18b6716af092.jpg",
-  "navbar": {
-    "primary": {
-      "type": "github",
-      "href": "https://github.com/charlie947/social-media-skills"
-    }
-  },
-  "footer": {
-    "socials": {
-      "github": "https://github.com/charlie947/social-media-skills"
-    }
-  },
+  "primaryColor": "#dc956e",
+  "lightColor": "#344479",
+  "darkColor": "#84748c",
   "navigation": {
     "tabs": [
       {
@@ -79,5 +66,34 @@
         ]
       }
     ]
-  }
+  },
+  "keyFeatures": [
+    "Voice profile builder that captures writing style from samples and interview",
+    "LinkedIn post writer with voice-matched drafting, angle selection, and iteration",
+    "Data-driven post scorer using real Apify-scraped LinkedIn history",
+    "Reels scripting via Apify + Gemini 2.5 Flash outlier analysis",
+    "Gemini image generation prompts for infographics, carousels, and quote posts",
+    "Analytics dashboard from LinkedIn CSV export with 5 actionable recommendations",
+    "Content matrix generating 32+ post ideas from topic pillars and formats",
+    "Niche research via Claude for Chrome surfacing 7-day trending stories"
+  ],
+  "publicApiSurface": [
+    "voice-builder",
+    "newsletter-voice",
+    "profile-optimizer",
+    "post-writer",
+    "post-formatter",
+    "post-scorer",
+    "hook-generator",
+    "graphic-designer",
+    "content-matrix",
+    "niche-research",
+    "gemini-infographic",
+    "gemini-carousel",
+    "quote-post",
+    "reels-scripting",
+    "youtube-thumbnail",
+    "pinned-comment",
+    "analytics-dashboard"
+  ]
 }

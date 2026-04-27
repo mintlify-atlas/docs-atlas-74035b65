@@ -1,0 +1,210 @@
+---
+title: "Reels Scripting: Apify + Gemini 2.5 Flash Workflow"
+description: "Reverse-engineer outlier Instagram Reels with Apify and Gemini 2.5 Flash, then write a voice-matched script from your newsletter content."
+---
+
+The Reels Scripting skill turns any reference Instagram Reel into a production-ready script tuned to your newsletter voice. It scrapes the video with Apify, sends the footage to Gemini 2.5 Flash for a full transcript and structural analysis, then applies every pattern it finds to a new script built around your newsletter topic. The output lands on your Desktop as a Markdown file containing the hook, body, CTA, Instagram caption, and comment trigger — all written together, never separately.
+
+## Trigger phrases
+
+This skill activates when you say any of the following:
+
+- "script a reel"
+- "reels scripting"
+- "turn this into a reel"
+- paste an Instagram Reel URL directly
+- reference a Notion outlier Reels database link
+
+## Prerequisites
+
+<Warning>
+The skill stops immediately if either environment variable is missing. Set both before triggering the skill.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="APIFY_API_TOKEN" icon="spider">
+    Used to call `apify/instagram-reel-scraper` and its fallback actors. Get your token from the Apify console under **Settings → Integrations**.
+  </Card>
+  <Card title="GOOGLE_AI_API_KEY" icon="sparkles">
+    Used to call Gemini 2.5 Flash for video analysis. Generate a key in Google AI Studio. Do not substitute a different model without explicit approval.
+  </Card>
+</CardGroup>
+
+If either key is absent, export them in your terminal before proceeding:
+
+```bash
+export APIFY_API_TOKEN=your_token
+export GOOGLE_AI_API_KEY=your_key
+```
+
+You also need **Node.js 18+** and the following packages available:
+
+```bash
+npm install apify-client @google/generative-ai
+```
+
+## Workflow
+
+<Steps>
+  <Step title="Provide the reference Reel">
+    Paste the Instagram Reel URL you want to reverse-engineer. If you have a Notion outlier Reels database, paste the Notion page link instead. The skill fetches the page, locates the embedded Reel URL, and extracts it automatically.
+
+    <Note>
+      If no Reel URL is found on the Notion page, the skill asks you to paste the URL directly rather than guessing.
+    </Note>
+  </Step>
+
+  <Step title="Provide the newsletter topic">
+    Paste the newsletter section you want to repurpose, or describe the core idea in one sentence. The skill reads `newsletter-voice.md`, `voice.md`, and `about-me.md` from your project if they exist, so the output matches your voice exactly.
+  </Step>
+
+  <Step title="Scrape and download the Reel">
+    A Node.js script is written to `~/Desktop/Reels/analyse-reel.js`. It runs three actor attempts in order until one succeeds:
+
+    1. `apify/instagram-reel-scraper` with `directUrls`
+    2. Same actor with `urls` as the fallback key
+    3. `apify/instagram-scraper` with `resultsType: 'posts'`
+
+    The video downloads to `~/Desktop/Reels/downloads/{username}_{shortCode}.mp4`. Raw scrape data (views, likes, comments, caption) saves to `~/Desktop/Reels/reel_data_{shortCode}.json`.
+
+    <Warning>
+      If all three actor variants fail, the skill reports the failure and stops. It never fabricates analysis from a failed scrape.
+    </Warning>
+  </Step>
+
+  <Step title="Analyse with Gemini 2.5 Flash">
+    The downloaded video is read as base64 and sent to `gemini-2.5-flash` with a structured prompt that extracts:
+
+    - Full transcript with timestamps
+    - Exact hook words and word count
+    - Language patterns (sentence length, you/I ratio, minimiser words)
+    - Section breakdown with timings and the before/after moment
+    - The single most important technique to replicate
+
+    Analysis saves to `~/Desktop/Reels/analysis_reference_{shortCode}.md`.
+  </Step>
+
+  <Step title="Write the new Reel script">
+    Using the Gemini analysis, your newsletter topic, and your voice files, the skill writes a complete script to `~/Desktop/Reels/reel-[slug].md`. See the [script structure](#script-file-structure) and [writing rules](#writing-rules) sections below.
+  </Step>
+
+  <Step title="QA loop — 95/100 gate">
+    Every script is scored against the rules before you see it. Common violations are checked automatically:
+
+    - Opens with "I"
+    - Three or more staccato fragments in a row
+    - States the conclusion explicitly
+    - Comment trigger contains multiple words or stylised capitalisation
+    - Script runs over 45 seconds when read aloud
+    - Three body points instead of two
+    - Caption does not mirror the script
+
+    The script is rewritten until it scores 95/100 or higher. You never see a draft below that threshold.
+  </Step>
+
+  <Step title="Choose your recording path">
+    After approval, the skill offers two options:
+
+    1. Record the script yourself.
+    2. Auto-generate using ElevenLabs (voice) + HeyGen (avatar) + Remotion (motion graphics) — available if you have the `my-video` project configured.
+  </Step>
+</Steps>
+
+## Script file structure
+
+Every script output follows this exact format:
+
+```markdown
+# Reel: [title]
+
+## Reference analysis
+- URL: [reel url]
+- Views: [number]
+- Key technique: [from Gemini analysis]
+
+## Duration target
+30-45 seconds
+
+## Hook (0-3s)
+[Exact words]
+
+## Point 1 ([start]-[end]s)
+[Exact words]
+
+## Point 2 ([start]-[end]s)
+[Exact words]
+
+## CTA ([start]-[end]s)
+[Exact words including "Comment [WORD]"]
+
+---
+
+## Caption
+[Mirror the script, formatted for Instagram]
+
+## Comment trigger
+[WORD]
+
+## Deliverable
+[What the comment trigger unlocks]
+
+---
+
+## Visual notes
+[Cuts, B-roll ideas, text overlays]
+```
+
+<Note>
+The caption, comment trigger, and deliverable are always delivered alongside the script. The skill never outputs just the script body.
+</Note>
+
+## Writing rules
+
+<AccordionGroup>
+  <Accordion title="Hook rules">
+    - Never open with "I". Use "this", "you", a fact, or a name drop.
+    - Proven formats: "This changed... forever" / negative flip ("X is useless unless...") / capability statement.
+    - Hook must create curiosity or a pattern interrupt within 3 seconds.
+    - Mirror the reference Reel's hook word count and structure exactly.
+  </Accordion>
+
+  <Accordion title="Body rules">
+    - British English. Short sentences. No em dashes, no semicolons.
+    - Use "you" and "just" conversationally.
+    - Never merge three or more staccato fragments — combine into one flowing sentence instead.
+    - Never state the conclusion. Let the facts do the work.
+    - No "link in bio". Use comment automation only.
+    - Two key points maximum. Not three.
+    - Target 30 to 45 seconds total.
+  </Accordion>
+
+  <Accordion title="Comment trigger rules">
+    - A single capitalised word only: SCRIPT, WIKI, PROMPTS, VIDEO.
+    - Must directly relate to what is being promised.
+    - No quotes, no "below", no trailing punctuation.
+  </Accordion>
+
+  <Accordion title="CTA rules">
+    - Format: "Comment [WORD] and I'll send you [specific thing]"
+    - Keep it short. No "the link to my full" padding.
+  </Accordion>
+
+  <Accordion title="Caption rules">
+    - Caption mirrors the script.
+    - Update both together whenever the script changes.
+  </Accordion>
+</AccordionGroup>
+
+## Output files
+
+| File | Contents |
+|---|---|
+| `~/Desktop/Reels/analyse-reel.js` | Node.js scraper and Gemini analysis script |
+| `~/Desktop/Reels/downloads/{username}_{shortCode}.mp4` | Downloaded reference Reel video |
+| `~/Desktop/Reels/reel_data_{shortCode}.json` | Raw Apify scrape data |
+| `~/Desktop/Reels/analysis_reference_{shortCode}.md` | Full Gemini 2.5 Flash analysis |
+| `~/Desktop/Reels/reel-[slug].md` | Final script with caption and comment trigger |
+
+<Tip>
+The Gemini analysis file is worth keeping. It documents the exact techniques that made the reference Reel an outlier, and you can reference it when briefing editors or repurposing the format again later.
+</Tip>
